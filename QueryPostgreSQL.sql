@@ -1,10 +1,12 @@
+CREATE TYPE genre_enum AS ENUM ('fiction', 'romance', 'novel', 'science', 'science fiction', 'motivation');
+
 CREATE TABLE "buku" (
   "isbn" CHAR(13) PRIMARY KEY NOT NULL,
   "cover" VARCHAR,
   "judul" VARCHAR(255) NOT NULL,
   "deskripsi" VARCHAR(255) NOT NULL,
   "author" VARCHAR(255) NOT NULL,
-  "genre" VARCHAR(255) NOT NULL,
+  "genre" genre_enum NOT NULL,
   "penerbit" VARCHAR(255) NOT NULL,
   "jumlah" int NOT NULL
 );
@@ -28,7 +30,7 @@ CREATE TYPE tipe_status AS ENUM ('sedang dipinjam', 'sudah dikembalikan');
 CREATE TABLE "peminjaman" (
   "id_peminjaman" SERIAL PRIMARY KEY NOT NULL,
   "deadline" DATE NOT NULL,
-  status tipe_status, 
+  "status" tipe_status NOT NULL, 
   "id_user" INT NOT NULL,
   "isbn" VARCHAR(13) NOT NULL
 );
@@ -42,8 +44,8 @@ CREATE TABLE "readLater" (
 CREATE TABLE "review" (
   "id_user" INT NOT NULL,
   "isbn" VARCHAR(13) NOT NULL,
-  "rating" INTEGER CHECK (nilai IN (1, 2, 3, 4, 5)) NOT NULL
-  "ulasan" VARCHAR(255) 
+  "rating" INTEGER CHECK (rating IN (1, 2, 3, 4, 5)) NOT NULL,
+  "ulasan" VARCHAR(255)
 );
 
 ALTER TABLE "peminjaman" ADD FOREIGN KEY ("id_user") REFERENCES "user" ("id_user");
@@ -57,4 +59,3 @@ ALTER TABLE "readLater" ADD FOREIGN KEY ("isbn") REFERENCES "buku" ("isbn");
 ALTER TABLE "review" ADD FOREIGN KEY ("id_user") REFERENCES "user" ("id_user");
 
 ALTER TABLE "review" ADD FOREIGN KEY ("isbn") REFERENCES "buku" ("isbn");
-
