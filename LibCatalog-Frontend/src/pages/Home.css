@@ -1,0 +1,104 @@
+h1.allBooks {
+    text-align: center;
+    font-size: 23px;
+    margin-top: 20px; 
+    font-family: 'Times New Roman', Times, serif; 
+}
+
+p.allBooks {
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 20px; 
+    font-family: 'Times New Roman', Times, serif; 
+}
+
+.book-list {
+    margin: 20px auto; 
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Mengurangi lebar kartu */
+    gap: 10px; /* Mengurangi jarak antara kartu */
+    justify-content: center; /* Memposisikan grid ke tengah halaman */
+    max-width: 1200px;
+}
+
+.book-item {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 200px; /* Mengurangi lebar kartu */
+}
+
+.book-item:hover {
+    background-color: lightgray;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(-5px); /* Mengangkat kartu buku sedikit saat dihover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Meningkatkan bayangan kartu */
+    cursor: pointer;
+}
+
+.book-cover {
+    width: 100%;
+    height: auto;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.book-info {
+    padding: 10px;
+    flex-grow: 1; /* Memastikan info buku mengisi semua ruang yang tersedia */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: auto;
+}
+
+.book-title {
+    margin-top: 5px; /* Menambahkan sedikit margin atas */
+    margin-bottom: 5px;
+    font-size: 16px;
+    text-align: center; /* Menengahkan judul */
+    max-width: 80%;
+    font-weight: bold;
+}
+
+.book-description {
+    margin-bottom: 5px;
+    font-size: 12px;
+    text-align: center; /* Menengahkan deskripsi */
+    max-width: 80%;
+}
+
+.book-read-later {
+    background-color: #000;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px; /* Mengurangi padding */
+    font-size: 0.9rem; /* Mengurangi ukuran font */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    align-self: flex-end;
+    max-width: 60%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: auto;
+}
+
+.book-read-later:not(:last-child) {
+    margin-right: 6px; /* Mengurangi jarak antara tombol read later */
+}
+
+.book-read-later:hover {
+    box-shadow: 0 4px 6px gray;
+    background-color: lightgrey;
+}

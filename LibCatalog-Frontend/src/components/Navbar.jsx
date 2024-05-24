@@ -16,7 +16,7 @@ const Navbar = () => {
         <nav className="bg-white border-gray-200 dark:bg-gray-900 py-4">
             <div className="container mx-auto flex justify-between items-center">
                 <div className="flex items-center space-x-4">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS58NfJoUEBSrVT_0-ldugoxm0zbw1wGznbNfI5pqh8HA&s" alt="Library Logo" className="w-12 h-12 rounded-full" />
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHDkd2V9dHdLORn-D1AMr73gMiH2Mmqan8LjxZ2sILBg&s" alt="Library Logo" className="w-12 h-12 rounded-full" />
                     <div className="text-xl font-semibold text-white">Library</div>
                 </div>
                 <ul className="flex space-x-8"> {/* Ubah space-x-4 menjadi space-x-8 untuk menambahkan jarak */}
@@ -28,13 +28,6 @@ const Navbar = () => {
                     <li><a href="#" className="text-white">Blog</a></li>
                 </ul>
                 <div className="flex items-center space-x-4">
-                    <input
-                        type="text"
-                        placeholder="Search..."
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        className="px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500"
-                    />
                     <div className="relative">
                         <button
                             onClick={toggleDropdown}
