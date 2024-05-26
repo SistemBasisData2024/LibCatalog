@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const profileRepo = require('./repository/profileRepo');
 const bookRepo = require('./repository/bookRepo');
+const userControllers = require('./controllers/User.controllers');
 const db = require('./db/db');
 require('dotenv').config();
 
@@ -15,7 +16,7 @@ app.use(cors());
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(bodyParser.json()); 
 
 // Endpoint Profile
 app.post('/profile', profileRepo.register);
@@ -25,6 +26,17 @@ app.get('/home', bookRepo.getAllBooks);
 app.get('/home/:genre', bookRepo.getGenre);
 app.get('/home/top', bookRepo.topFiveBooks);
 app.get('/book/:isbn', bookRepo.bookDetails);
+
+//endpoint user
+app.get('/user/:id_user', userControllers.getUserProfile);
+app.post('/borrow', userControllers.borrowBook);
+app.put('/return/:id_peminjaman', userControllers.returnBook);
+app.post('/review', userControllers.addReview);
+app.get('/review/:isbn', userControllers.getReviews);
+app.post('/readlater', userControllers.userAddReadlater);
+app.get('/readlater/:id_user', userControllers.userGetReadLater);
+app.delete('/readlater/:id_read_later', userControllers.userDeleteReadlater);
+app.post('/rating', userControllers.addRating);
 
 // Logging
 app.listen(port, () => {
