@@ -1,0 +1,124 @@
+.user-profile-container {
+    max-width: 1000px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-profile-container h2 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: bold;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.user-info p {
+    font-size: 18px;
+    margin: 5px 0;
+    color: #333;
+}
+
+.books-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.books-section {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.books-section h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #333;
+    font-weight: bold;
+}
+
+.card-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.card p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: #555;
+}
+
+.card p strong {
+    color: #333;
+}
+
+.card .status {
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.card .status.borrowed {
+    background-color: #ffeb3b;
+    color: #795548;
+}
+
+.card .status.returned {
+    background-color: #4caf50;
+    color: #fff;
+}
+
+.card .status:hover {
+    filter: brightness(0.9);
+}
+
+.return-button {
+    background-color: #e74e24;
+    color: #6f2121;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-left: 10px;
+    transition: background-color 0.3s;
+    display: inline-block;
+}
+
+.return-button:hover {
+    background-color: #b94120;
+    color: #310f0f;
+}

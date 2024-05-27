@@ -7,21 +7,21 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,
     host: process.env.DB_HOST,
 
-     // Set to true if you are using a remote server that uses HTTPS
+    // Set to true if you are using a remote server that uses HTTPS
     ssl: {
         require: true,
     },
 });
 
 pool.connect().then(() => {
-  console.log("Connected to PostgreSQL database");
+    console.log("Connected to PostgreSQL database");
 });
 
 // BOOK
 // HOME PAGE    --> GET getAllBooks, GET getGenre, GET topFiveBooks
 // BOOK DETAIL  --> GET bookDetails
 
-async function getAllBooks(req, res){
+async function getAllBooks(req, res) {
     try {
         const result = await pool.query('SELECT * FROM buku');
         const events = result.rows;
@@ -31,7 +31,7 @@ async function getAllBooks(req, res){
     }
 };
 
-async function getGenre(req, res){
+async function getGenre(req, res) {
     const genre = req.params;
 
     try {

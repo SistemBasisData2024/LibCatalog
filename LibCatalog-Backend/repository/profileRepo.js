@@ -7,20 +7,20 @@ const pool = new Pool({
     password: process.env.DB_PASSWORD,
     host: process.env.DB_HOST,
 
-     // Set to true if you are using a remote server that uses HTTPS
+    // Set to true if you are using a remote server that uses HTTPS
     ssl: {
         require: true,
     },
 });
 
 pool.connect().then(() => {
-  console.log("Connected to PostgreSQL database");
+    console.log("Connected to PostgreSQL database");
 });
 
 const register = (req, res) => {
-    const { name, email, password } = req.body;
+    const { nama, username, password } = req.body;
 
-    pool.query('INSERT INTO profiles (name, email, password) VALUES ($1, $2, $3) RETURNING id', [name, email, password], (error, results) => {
+    pool.query('INSERT INTO user (nama, username, password) VALUES ($1, $2, $3) RETURNING id', [nama, username, password], (error, results) => {
         if (error) {
             res.status(500).json({ error: error.message });
             return;
@@ -32,7 +32,7 @@ const register = (req, res) => {
 const login = (req, res) => {
     const id = req.params.id;
 
-    pool.query('SELECT * FROM profiles WHERE id = $1', [id], (error, results) => {
+    pool.query('SELECT * FROM user WHERE id = $1', [id], (error, results) => {
         if (error) {
             res.status(500).json({ error: error.message });
             return;
