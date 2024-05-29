@@ -1,8 +1,71 @@
+.top-books-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 400px; /* Adjust height as needed */
+}
+
+.top-books-slider {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+}
+
+.top-book {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: center;
+}
+
+.top-book img {
+    max-width: 100%;
+    height: auto;
+}
+
+.book-info {
+    margin-top: 10px;
+}
+
+.loading-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
 h1.allBooks {
     text-align: center;
     font-size: 23px;
     margin-top: 20px; 
     font-family: 'Times New Roman', Times, serif; 
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+
+.genreButton {
+    background-color: beige;
+    border: 1px solid black;;
+    color: black;
+    padding: 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    border-radius: 12px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.genreButton:hover {
+    background-color: white;
+    color: black;
+    transform: scale(1.1);
 }
 
 p.allBooks {
