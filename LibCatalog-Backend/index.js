@@ -33,10 +33,13 @@ app.post('/borrow', userControllers.borrowBook);
 app.put('/return/:id_peminjaman', userControllers.returnBook);
 app.post('/review', userControllers.addReview);
 app.get('/review/:isbn', userControllers.getReviews);
-app.post('/readlater', userControllers.userAddReadlater);
-app.get('/readlater/:id_user', userControllers.userGetReadLater);
-app.delete('/readlater/:id_read_later', userControllers.userDeleteReadlater);
+app.post('/readlater', userControllers.addReadLater);
+app.get('/readlater/:id_user', userControllers.getReadLater);
+app.delete('/readlater/:id_read_later', userControllers.deleteReadLater);
 app.post('/rating', userControllers.addRating);
+app.post('/register', userControllers.registerUser);
+app.post('/login', userControllers.loginUser);
+
 
 // Logging
 app.listen(port, () => {
