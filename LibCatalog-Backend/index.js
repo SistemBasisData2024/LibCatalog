@@ -23,7 +23,7 @@ app.post('/profile', profileRepo.register);
 app.get('/profile/:id', profileRepo.login);
 // Endpoint Book
 app.get('/home', bookRepo.getAllBooks);
-app.get('/home/:genre', bookRepo.getGenre);
+app.get('/home/genre/:genre', bookRepo.getGenre);
 app.get('/home/top', bookRepo.topFiveBooks);
 app.get('/book/:isbn', bookRepo.bookDetails);
 

@@ -1,13 +1,78 @@
+.navigation-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.nav-button {
+    background-color: white;
+    color: white;
+    padding: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 14px;
+    margin: 4px 2px;
+    border-radius: 12px;
+    transition: transform 0.2s ease-in-out;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+
+.nav-button:hover {
+    background-color: white;
+    color: black;
+    transform: scale(1.1);
+}
+
 .top-books-container {
     width: 100%;
     overflow: hidden;
     position: relative;
-    height: 400px; /* Adjust height as needed */
+    height: 350px; /* Adjust height as needed */
+    background-color: #7096D1;
 }
 
 .top-books-slider {
     display: flex;
     transition: transform 0.5s ease-in-out;
+}
+
+.top-book {
+    min-width: 100%;
+    box-sizing: border-box;
+    padding: 20px;
+    text-align: left; /* Align text to the left */
+    display: flex;
+    align-items: center; /* Center items vertically */
+    justify-content: center;
+}
+
+.top-book-content {
+    display: flex;
+    align-items: center;
+}
+
+.top-book-cover {
+    max-width: 200px;
+    height: auto;
+    margin-right: 40px;
+}
+
+.top-book-info {
+    color: white; /* White text color for title and description */
+    text-align: left;
+}
+
+.top-book-title {
+    font-size: 26px;
+    margin-bottom: 10px;
+    align-items: left;
+    font-weight: bold;
+}
+
+.top-book-description {
+    font-size: 16px;
+    align-items: left;
 }
 
 .top-book {
@@ -50,7 +115,7 @@ h1.allBooks {
 
 .genreButton {
     background-color: beige;
-    border: 1px solid black;;
+    border: 1.5px solid black;;
     color: black;
     padding: 12px;
     text-align: center;

@@ -24,10 +24,18 @@ const Home = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentIndex((prevIndex) => (prevIndex + 1) % topBooks.length);
-        }, 3000); // Change book every 3 seconds
+        }, 5000); // Change book every 3 seconds
 
         return () => clearInterval(interval);
     }, [topBooks.length]);
+
+    const handleNext = () => {
+        setCurrentIndex((prevIndex) => (prevIndex + 1) % topBooks.length);
+    };
+
+    const handlePrevious = () => {
+        setCurrentIndex((prevIndex) => (prevIndex - 1 + topBooks.length) % topBooks.length);
+    };
 
     return (
         <div>
@@ -41,16 +49,23 @@ const Home = () => {
                 {topBooks.length > 0 ? (
                     topBooks.map((book, index) => (
                         <div key={index} className="top-book">
-                            <img src={book.cover} alt={book.judul} />
-                            <div className="book-info">
-                                <h2>{book.judul}</h2>
-                                <p>{book.deskripsi}</p>
+                                <div className="top-book-content">
+                                    <img src={book.cover} alt={book.judul} className="top-book-cover" />
+                                    <div className="top-book-info">
+                                        <h2 className="top-book-title">{book.judul}</h2>
+                                        <p className="top-book-description">{book.deskripsi}</p>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
                     ))
                 ) : (
                     <p className="loading-message">Loading top books...</p>
                 )}
+                </div>
+
+                <div className="navigation-buttons">
+                    <button onClick={handlePrevious} className="nav-button"></button>
+                    <button onClick={handleNext} className="nav-button"></button>
                 </div>
             </div>
 

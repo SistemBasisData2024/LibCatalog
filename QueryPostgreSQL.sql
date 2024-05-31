@@ -59,3 +59,20 @@ ALTER TABLE "readLater" ADD FOREIGN KEY ("isbn") REFERENCES "buku" ("isbn");
 ALTER TABLE "review" ADD FOREIGN KEY ("id_user") REFERENCES "user" ("id_user");
 
 ALTER TABLE "review" ADD FOREIGN KEY ("isbn") REFERENCES "buku" ("isbn");
+
+CREATE OR REPLACE VIEW top_5_books_by_rating AS
+SELECT 
+    b.judul,
+    b.author,
+    b.deskripsi,
+    b.cover,
+    AVG(r.rating) AS average_rating
+FROM 
+    buku b
+JOIN 
+    review r ON b.isbn = r.isbn
+GROUP BY 
+    b.judul, b.author, b.deskripsi, b.cover
+ORDER BY 
+    average_rating DESC
+LIMIT 5;

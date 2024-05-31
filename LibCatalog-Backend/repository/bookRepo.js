@@ -54,9 +54,7 @@ async function topFiveBooks(req, res) {
     try {
         const result = await pool.query(
             `
-            SELECT * FROM buku
-            ORDER BY rating DESC
-            LIMIT 5
+            select * from top_5_books_by_rating
             `
         );
         const topBooks = result.rows;
