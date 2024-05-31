@@ -37,6 +37,10 @@ const Home = () => {
         setCurrentIndex((prevIndex) => (prevIndex - 1 + topBooks.length) % topBooks.length);
     };
 
+    const handleJumpToIndex = (index) => {
+        setCurrentIndex(index);
+    };
+
     return (
         <div>
             <Navbar />
@@ -64,8 +68,16 @@ const Home = () => {
                 </div>
 
                 <div className="navigation-buttons">
-                    <button onClick={handlePrevious} className="nav-button"></button>
-                    <button onClick={handleNext} className="nav-button"></button>
+                    <button onClick={handlePrevious} className="nav-button-arrow">←</button>
+                    {topBooks.slice(0, 5).map((_, index) => (
+                        <button 
+                            key={index} 
+                            onClick={() => handleJumpToIndex(index)} 
+                            className={`nav-button ${index === currentIndex ? 'active' : ''}`}
+                        >
+                        </button>
+                    ))}
+                    <button onClick={handleNext} className="nav-button-arrow">→</button>
                 </div>
             </div>
 
@@ -90,7 +102,7 @@ const Home = () => {
                             <div className='book-info'>
                                 <h2 className='book-title'>{book.judul}</h2>
                                 <p className='book-description'>{book.deskripsi}</p>
-                                <button className='book-read-later'>📅</button>
+                                <button className='book-read-later'>🕮</button>
                                 {/* You can add more book details here */}
                             </div>
                         </div>
