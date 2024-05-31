@@ -3,7 +3,7 @@ const pool = require ('../db/db.js');
 
 async function addReadLater (id_user, isbn) {
     const query = `
-        INSERT INTO read_later (id_user, isbn)
+        INSERT INTO readLater (id_user, isbn)
         VALUES ($1, $2)
         RETURNING *
     `;
@@ -13,7 +13,7 @@ async function addReadLater (id_user, isbn) {
 
 async function getReadLater (id_user) {
     const query = `
-        SELECT * FROM read_later
+        SELECT * FROM readLater
         WHERE id_user = $1
     `;
     const result
@@ -22,7 +22,7 @@ async function getReadLater (id_user) {
 
 async function deleteReadLater (id_user, isbn) {
     const query = `
-        DELETE FROM read_later
+        DELETE FROM readLater
         WHERE id_user = $1 AND isbn = $2
         RETURNING *
     `;

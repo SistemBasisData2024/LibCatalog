@@ -1,13 +1,15 @@
 const pool = require ('../db/db.js');
 
 
-async  function borrowBook(id_user, isbn, deadline) {
+async function borrowBook(id_user, isbn) {
+    const deadline = new Date();
+    deadline.setDate(deadline.getDate() + 7); 
     const query = `
         INSERT INTO peminjaman (id_user, isbn, deadline, status)
         VALUES ($1, $2, $3, 'sedang dipinjam')
         RETURNING *
     `;
-    const result = await pool.query(query, [id_user, isbn, deadline]);
+    const result = await pool.query(query, [id_user, isbn, deadline.toISOString().split('T')[0]]);
     return result.rows[0];
 }
 

@@ -8,13 +8,13 @@ async function getUserProfile(id_user) {
     const result = await pool.query(query, [id_user]);
     return result.rows[0];
 }
-async function registerUser(name, username, password) {
+async function registerUser(nama, username, password) {
     const query = `
         INSERT INTO "user" (nama, username, password)
         VALUES ($1, $2, $3)
         RETURNING id_user
     `;
-    const result = await pool.query(query, [name, username, password]);
+    const result = await pool.query(query, [nama, username, password]);
     return result.rows[0];
 }
 

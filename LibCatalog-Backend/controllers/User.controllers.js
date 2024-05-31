@@ -19,10 +19,10 @@ async function getUserProfile(req, res) {
 }
 
 async function registerUser(req, res) {
-    const { name, username, password } = req.body;
+    const { nama, username, password } = req.body;
 
     try {
-        const user = await userServices.registerUser(name, username, password);
+        const user = await userServices.registerUser(nama, username, password);
         res.status(201).json(user);
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
@@ -45,15 +45,16 @@ async function loginUser(req, res) {
 }
 
 async function borrowBook(req, res) {
-    const { id_user, isbn, deadline } = req.body;
+    const { id_user, isbn } = req.body;
 
     try {
-        const borrow = await borrowServices.borrowBook(id_user, isbn, deadline);
+        const borrow = await borrowServices.borrowBook(id_user, isbn);
         res.status(201).json(borrow);
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
+
 
 async function returnBook(req, res) {
     const { id_peminjaman } = req.params;
