@@ -1,0 +1,56 @@
+body {
+  background: radial-gradient(circle, lightblue, #3066be);
+  margin: 0;
+}
+
+.book-review-container {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.book-details-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  min-height: 540px;
+}
+
+.book-detail-frame {
+  display: flex;
+  background-color: #fff; 
+  border: 1px solid #ccc; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+  border-radius: 15px; 
+  overflow: hidden; 
+  /* max-width: 1250px;  */
+  height: 500px;
+  width: 1250px; 
+}
+
+.book-detail-cover {
+  width: 300px; /* Fixed width for the cover image */
+  height: auto; /* Maintain aspect ratio */
+  object-fit: cover; /* Cover the available space */
+  padding: 20px;
+  border: 1px solid #ccc; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+.book-detail-info {
+  margin-left: 20px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.book-detail-info h1 {
+  margin: 0 0 10px 0;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.book-detail-info p {
+  margin: 5px 0;
+}

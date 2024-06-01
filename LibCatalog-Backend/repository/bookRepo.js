@@ -32,16 +32,16 @@ async function getAllBooks(req, res) {
 };
 
 async function getGenre(req, res) {
-    const genre = req.params;
+    const genre = req.params.genre;
 
     try {
         const result = await pool.query(
             'SELECT * FROM buku WHERE genre = $1',
             [genre]
         );
-        const event = result.rows[0];
-        if (event) {
-            res.status(200).json(event);
+        const books = result.rows;
+        if (books.length > 0) {
+            res.status(200).json(books);
         } else {
             res.status(404).json({ error: "Genre not found" });
         }

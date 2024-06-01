@@ -21,13 +21,14 @@ app.use(bodyParser.json());
 // Endpoint Profile
 app.post('/profile', profileRepo.register);
 app.get('/profile/:id', profileRepo.login);
+
 // Endpoint Book
 app.get('/home', bookRepo.getAllBooks);
 app.get('/home/genre/:genre', bookRepo.getGenre);
 app.get('/home/top', bookRepo.topFiveBooks);
 app.get('/book/:isbn', bookRepo.bookDetails);
 
-//endpoint user
+// Endpoint User
 app.get('/user/:id_user', userControllers.getUserProfile);
 app.post('/borrow', userControllers.borrowBook);
 app.put('/return/:id_peminjaman', userControllers.returnBook);

@@ -62,6 +62,7 @@ ALTER TABLE "review" ADD FOREIGN KEY ("isbn") REFERENCES "buku" ("isbn");
 
 CREATE OR REPLACE VIEW top_5_books_by_rating AS
 SELECT 
+    b.isbn,
     b.judul,
     b.author,
     b.deskripsi,
@@ -72,7 +73,7 @@ FROM
 JOIN 
     review r ON b.isbn = r.isbn
 GROUP BY 
-    b.judul, b.author, b.deskripsi, b.cover
+    b.isbn, b.judul, b.author, b.deskripsi, b.cover
 ORDER BY 
     average_rating DESC
 LIMIT 5;
