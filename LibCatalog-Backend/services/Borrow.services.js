@@ -20,8 +20,7 @@ async function returnBook(id_peminjaman) {
         WHERE id_peminjaman = $1
         RETURNING *
     `; 
-    const result
-    = await pool.query(query, [id_peminjaman]);
+    const result = await pool.query(query, [id_peminjaman]);
     return result.rows[0];
 }
 
