@@ -11,18 +11,28 @@ const BookDetail = () => {
   const [isBorrowed, setIsBorrowed] = useState(false);
   const [isReturned, setIsReturned] = useState(false);
   const [loanId, setLoanId] = useState(null);  
+  const [userId, setUserId] = useState(null);
+  const [isBookBorrowed, setIsBookBorrowed] = useState(false);
 
 
   useEffect(() => {
+    const loggedInUser = 1;
+    setUserId(loggedInUser);
     fetch(`http://localhost:5000/book/${isbn}`)
       .then((response) => response.json())
       .then((data) => setBook(data))
       .catch((err) => console.log(err));
   }, [isbn]);
 
-   const handleBorrow = () => {
-    const userId = 1;
+  useEffect (() => {
+    if (book && book.status === 'sedang dipinjam') {
+      setIsBookBorrowed(true);
+      setLoanId(book.id_peminjaman);
+    }
+  }, [book]);
 
+
+  const handleBorrow = () => {
     fetch(`http://localhost:5000/borrow`, {
       method: 'POST',
       headers: {
@@ -32,31 +42,45 @@ const BookDetail = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
-        setIsBorrowed(true);
-        setLoanId(data.id_peminjaman);  
-        toast.success('Buku berhasil dipinjam!');
+        console.log("Response from server:", data);
+        if (data.message === "Berhasil Meminjam Buku") {
+          setIsBorrowed(true);
+          setLoanId(data.data); // Mengatur loanId dengan id_peminjaman dari respons
+          toast.success('Buku berhasil dipinjam!');
+        } else {
+          toast.error('Gagal meminjam buku!');
+        }
       })
       .catch((err) => console.log(err));
-  };
-
-  const handleReturn = () => {
-    const loanId = 60;
-    fetch(`http://localhost:5000/return/${loanId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ id_peminjaman: loanId }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
+};
+  
+const handleReturn = () => {
+  // Pastikan loanId tidak undefined di sini
+  console.log("loanId:", loanId); // Tambahkan ini untuk memeriksa loanId
+  fetch(`http://localhost:5000/return/${loanId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id_peminjaman: loanId }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      if (data.message === "Berhasil Mengembalikan Buku") {
         setIsReturned(true);
         toast.success('Buku berhasil dikembalikan!');
-      })
-      .catch((err) => console.log(err));
-  };
+        // Perbarui status peminjaman di state aplikasi frontend
+        setBook((prevBook) => ({
+          ...prevBook,
+          status: 'sudah dikembalikan',
+        }));
+      } else {
+        toast.error('Gagal mengembalikan buku!');
+      }
+    })
+    .catch((err) => console.log(err));
+};
 
   if (!book) {
     return <p>Loading book details...</p>;

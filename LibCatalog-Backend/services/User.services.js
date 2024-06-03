@@ -1,4 +1,6 @@
 const pool = require('../db/db.js');
+const bcrypt = require('bcrypt');
+
 
 async function getUserProfile(id_user) {
     const query = `
@@ -26,6 +28,8 @@ async function loginUser(username, password) {
     const result = await pool.query(query, [username, password]);
     return result.rows[0];
 }
+
+
 
 module.exports = {
     getUserProfile,

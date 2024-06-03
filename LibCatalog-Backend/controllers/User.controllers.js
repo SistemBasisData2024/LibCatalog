@@ -2,10 +2,10 @@ const userServices = require('../services/User.services.js');
 const borrowServices = require('../services/Borrow.services.js');
 const reviewServices = require('../services/Review.services.js');
 const readLaterServices = require('../services/readLater.services.js');
+const bcrypt = require('bcrypt');
 
 async function getUserProfile(req, res) {
     const { id_user } = req.params;
-
     try {
         const user = await userServices.getUserProfile(id_user);
         if (!user) {
@@ -34,27 +34,29 @@ async function loginUser(req, res) {
 
     try {
         const user = await userServices.loginUser(username, password);
-        if (!user) {
-            res.status(401).json({ error: "Invalid Credentials" });
-        } else {
-            res.status(200).json({ message: "Login berhasil", data: user });
-        }
+        req.session.user = user.id_user;
+        res.status(200).json({ message: "Login berhasil", data: user });
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
+
 
 async function borrowBook(req, res) {
     const { id_user, isbn } = req.body;
 
     try {
         const borrow = await borrowServices.borrowBook(id_user, isbn);
-        res.status(201).json({ message: "Berhasil Meminjam Buku", data: borrow });
+        if (borrow) {
+            res.status(201).json({ message: "Berhasil Meminjam Buku", data: borrow });
+        } else {
+            res.status(404).json({ error: "Buku tidak tersedia untuk dipinjam" });
+        }
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
-
 
 async function returnBook(req, res) {
     const { id_peminjaman } = req.params;
@@ -67,6 +69,7 @@ async function returnBook(req, res) {
             res.status(200).json({ message: "Berhasil Mengembalikan Buku", data: returned });
         }
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }

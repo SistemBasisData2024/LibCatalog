@@ -1,5 +1,6 @@
 const cors = require('cors');
 const express = require('express');
+const session = require('express-session');
 const bodyParser = require('body-parser');
 const profileRepo = require('./repository/profileRepo');
 const bookRepo = require('./repository/bookRepo');
@@ -14,6 +15,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors()); 
 
+// DARI GPT INI 
+app.use(session({
+    secret: 'secretkey',
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }
+}));
 // Middleware
 app.use(cors());
 app.use(bodyParser.json()); 
