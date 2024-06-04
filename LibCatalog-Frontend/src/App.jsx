@@ -16,6 +16,7 @@ function App() {
                 <Route path="/home" element={<Home />} />
                 <Route path="/userProfile" element={<UserProfile />} />
                 <Route path="/book/:isbn" element={<BookDetails />} />
+                <Route path="/login" element={<Login />} />
             </Routes>
         </Router>
     );

@@ -34,12 +34,13 @@ app.get('/profile/:id', profileRepo.login);
 app.get('/home', bookRepo.getAllBooks);
 app.get('/home/genre/:genre', bookRepo.getGenre);
 app.get('/home/top', bookRepo.topFiveBooks);
-app.get('/book/:isbn', bookRepo.bookDetails);
+app.get('/book/:isbn', bookRepo.bookDetails); //ininini
 
 // Endpoint User
 app.get('/user/:id_user', userControllers.getUserProfile);
 app.post('/borrow', userControllers.borrowBook);
 app.put('/return/:id_peminjaman', userControllers.returnBook);
+app.get('/borrow/:id_user/:isbn', userControllers.getBorrowedBooksByISBNandUser);
 app.post('/review', userControllers.addReview);
 app.get('/review/:isbn', userControllers.getReviews);
 app.post('/readlater', userControllers.addReadLater);

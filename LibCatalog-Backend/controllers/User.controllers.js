@@ -20,7 +20,6 @@ async function getUserProfile(req, res) {
 
 async function registerUser(req, res) {
     const { nama, username, password } = req.body;
-
     try {
         const user = await userServices.registerUser(nama, username, password);
         res.status(201).json({ message: "Berhasil Melakukan Register", data: user });
@@ -42,9 +41,10 @@ async function loginUser(req, res) {
 }
 
 
-async function borrowBook(req, res) {
-    const { id_user, isbn } = req.body;
 
+async function borrowBook(req, res) {
+    const { isbn } = req.body;
+    const id_user = req.session.user;
     try {
         const borrow = await borrowServices.borrowBook(id_user, isbn);
         if (borrow) {
@@ -60,7 +60,6 @@ async function borrowBook(req, res) {
 
 async function returnBook(req, res) {
     const { id_peminjaman } = req.params;
-
     try {
         const returned = await borrowServices.returnBook(id_peminjaman);
         if (!returned) {
@@ -70,6 +69,17 @@ async function returnBook(req, res) {
         }
     } catch (error) {
         console.error(error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+async function getBorrowedBooksByISBNandUser(req, res) {
+    const { isbn } = req.params;
+    const id_user = req.session.user;
+    try {
+        const borrowedBooks = await borrowServices.getBorrowedBooksByISBNandUser(id_user, isbn);
+        res.status(200).json(borrowedBooks);
+    } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
@@ -154,6 +164,7 @@ module.exports = {
     getUserProfile,
     borrowBook,
     returnBook,
+    getBorrowedBooksByISBNandUser,
     addReview,
     getReviews,
     addRating,

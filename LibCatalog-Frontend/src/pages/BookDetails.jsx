@@ -10,26 +10,48 @@ const BookDetail = () => {
   const [book, setBook] = useState(null);
   const [isBorrowed, setIsBorrowed] = useState(false);
   const [isReturned, setIsReturned] = useState(false);
-  const [loanId, setLoanId] = useState(null);  
+  const [borrowId, setborrowId] = useState(null);  
   const [userId, setUserId] = useState(null);
-  const [isBookBorrowed, setIsBookBorrowed] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    let user = localStorage.getItem("user")
+    if (user) {
+      user = JSON.parse(user);
+      setUser(user);
+    }
+    setUserId(user.id_user);
+  }, []);
 
 
   useEffect(() => {
-    const loggedInUser = 1;
-    setUserId(loggedInUser);
+    // setUserId(`userId=${req.session.user.id_user}`);  
+    // const loggedInUser = localStorage.getItem("user");
+    // setUserId(JSON.parse(loggedInUser).id_user);
+    // const userId = document.cookie.split(';').find(c => c.startsWith('id_user=')).split('=')[1];'
+    const loggedInUser = localStorage.getItem("user");
+    setUserId(JSON.parse(loggedInUser).id_user);
+  
     fetch(`http://localhost:5000/book/${isbn}`)
       .then((response) => response.json())
-      .then((data) => setBook(data))
+      .then((data) => {
+        setBook(data);
+          fetch(`http://localhost:5000/borrow/${userId}/${isbn}`)
+          .then((response) => response.json()) 
+          .then((data) => {
+            if ( !data ) {
+              setIsBorrowed(true);
+              setIsReturned(false);
+              setborrowId(data.id_peminjaman);
+            } 
+            if ( data ) {
+              setIsBorrowed(false);
+              setIsReturned(true);
+            }
+          })
+      })
       .catch((err) => console.log(err));
   }, [isbn]);
-
-  useEffect (() => {
-    if (book && book.status === 'sedang dipinjam') {
-      setIsBookBorrowed(true);
-      setLoanId(book.id_peminjaman);
-    }
-  }, [book]);
 
 
   const handleBorrow = () => {
@@ -45,7 +67,8 @@ const BookDetail = () => {
         console.log("Response from server:", data);
         if (data.message === "Berhasil Meminjam Buku") {
           setIsBorrowed(true);
-          setLoanId(data.data); // Mengatur loanId dengan id_peminjaman dari respons
+          setIsReturned(false);
+          setborrowId(data.data); // Mengatur borrowId dengan id_peminjaman dari respons
           toast.success('Buku berhasil dipinjam!');
         } else {
           toast.error('Gagal meminjam buku!');
@@ -53,22 +76,22 @@ const BookDetail = () => {
       })
       .catch((err) => console.log(err));
 };
-  
+
 const handleReturn = () => {
-  // Pastikan loanId tidak undefined di sini
-  console.log("loanId:", loanId); // Tambahkan ini untuk memeriksa loanId
-  fetch(`http://localhost:5000/return/${loanId}`, {
+  console.log("borrowId:", borrowId); // Tambahkan ini untuk memeriksa borrowId
+  fetch(`http://localhost:5000/return/${borrowId}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ id_peminjaman: loanId }),
+    body: JSON.stringify({ status, id_peminjaman: borrowId, isbn}),
   })
     .then((response) => response.json())
     .then((data) => {
       console.log(data);
       if (data.message === "Berhasil Mengembalikan Buku") {
         setIsReturned(true);
+        setIsBorrowed(false);
         toast.success('Buku berhasil dikembalikan!');
         // Perbarui status peminjaman di state aplikasi frontend
         setBook((prevBook) => ({
@@ -100,8 +123,19 @@ const handleReturn = () => {
             <p><strong>Penerbit:</strong> {book.penerbit}</p>
             <p><strong>Deskripsi:</strong> {book.deskripsi}</p>
             <p><strong>Jumlah:</strong> {book.jumlah}</p>
-            {!isBorrowed && <button onClick={handleBorrow}>Borrow Book</button>}
-            {isBorrowed && !isReturned && <button onClick={handleReturn}>Return Book</button>}
+            
+            {!isBorrowed  ? (
+                <button onClick={handleBorrow}>Borrow Book</button>
+              ) : (
+                <button onClick={handleReturn}>Return Book</button>
+              )
+            }
+
+            {/* {!isBorrowed && <button onClick={handleBorrow}>Borrow Book</button>}
+            {isBorrowed && !isReturned && <button onClick={handleReturn}>Return Book</button>} */}
+          
+          
+          
           </div>
         </div>
       </div>
