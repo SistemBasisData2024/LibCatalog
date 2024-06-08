@@ -8,12 +8,25 @@ const BookList = () => {
     const [backendData, setBackendData] = useState([{}]);
     const [selectedGenre, setSelectedGenre] = useState('');
     const [readLaterList, setReadLaterList] = useState([]);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         fetch("http://localhost:5000/home")
             .then((response) => response.json())
             .then((data) => setBackendData(data))
             .catch((err) => console.log(err));
+
+        let storedUser = localStorage.getItem("user")
+        if (storedUser) {
+            const parsedUser = JSON.parse(storedUser);
+            setUser(parsedUser);
+        }
+
+        // Load read later list
+        // fetch(`http://localhost:5000/readlater/${user.id_user}`)
+        //     .then((response) => response.json())
+        //     .then((data) => setReadLaterList(data))
+        //     .catch((err) => console.log(err));
     }, []);
 
     const fetchBooksByGenre = (genre) => {
@@ -42,12 +55,27 @@ const BookList = () => {
         setSelectedGenre(genre);
     };
 
+
     const addToReadLater = (isbn) => {
-        const book = backendData.find((b) => b.isbn === isbn);
-        if (book && !readLaterList.some((item) => item.isbn === isbn)) {
-            setReadLaterList([...readLaterList, book]);
-            toast.success(`${book.judul} added to read later list`);
-        }
+        fetch(`http://localhost:5000/readlater/${user.id_user}/${isbn}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ id_user: user.id_user, isbn }) 
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to add to Read Later list");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            setReadLaterList([...readLaterList, data]);
+            console.log(data);
+            toast.success(`Added to Read Later list`);
+        })
+        .catch((err) => toast.error(err.message));
     };
 
     return (
@@ -123,7 +151,11 @@ const BookList = () => {
                             </Link>
                             <button 
                                 className='book-read-later' 
-                                disabled={readLaterList.some(item => item.isbn === book.isbn)} 
+                                disabled={
+                                    readLaterList.some(item => item.isbn === book.isbn && item.id_user === user.id_user)
+                                    // console log aja dulu item ama book punya
+                                } 
+                                
                                 onClick={() => addToReadLater(book.isbn)}
                             >
                                 🕮

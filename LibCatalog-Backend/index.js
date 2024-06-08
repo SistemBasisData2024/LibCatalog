@@ -38,9 +38,11 @@ app.put('/return/:id_peminjaman', userControllers.returnBook);
 app.get('/borrow/:id_user/:isbn', userControllers.getBorrowedBooksByISBNandUser);
 app.post('/review', userControllers.addReview);
 app.get('/review/:isbn', userControllers.getReviews);
-app.post('/readlater', userControllers.addReadLater);
+
+app.post('/readlater/:id_user/:isbn', userControllers.addReadLater);
 app.get('/readlater/:id_user', userControllers.getReadLater);
 app.delete('/readlater/:id_read_later', userControllers.deleteReadLater);
+
 app.post('/rating', userControllers.addRating);
 app.post('/register', userControllers.registerUser);
 app.post('/login/user', userControllers.loginUser);
