@@ -8,6 +8,7 @@ const BookList = () => {
     const [backendData, setBackendData] = useState([{}]);
     const [selectedGenre, setSelectedGenre] = useState('');
     const [readLaterList, setReadLaterList] = useState([]);
+    const [readLaterListID, setReadLaterListID] = useState([]);
     const [user, setUser] = useState(null);
 
     useEffect(() => {
@@ -20,13 +21,12 @@ const BookList = () => {
         if (storedUser) {
             const parsedUser = JSON.parse(storedUser);
             setUser(parsedUser);
-        }
 
-        // Load read later list
-        // fetch(`http://localhost:5000/readlater/${user.id_user}`)
-        //     .then((response) => response.json())
-        //     .then((data) => setReadLaterList(data))
-        //     .catch((err) => console.log(err));
+            fetch(`http://localhost:5000/readlater/${parsedUser.id_user}`)
+                .then((response) => response.json())
+                .then((data) => setReadLaterListID(data))
+                .catch((err) => console.log(err));
+        }
     }, []);
 
     const fetchBooksByGenre = (genre) => {
@@ -72,6 +72,7 @@ const BookList = () => {
         })
         .then((data) => {
             setReadLaterList([...readLaterList, data]);
+            setReadLaterListID([...readLaterListID, { id_user: user.id_user, isbn }]);
             console.log(data);
             toast.success(`Added to Read Later list`);
         })
@@ -152,8 +153,7 @@ const BookList = () => {
                             <button 
                                 className='book-read-later' 
                                 disabled={
-                                    readLaterList.some(item => item.isbn === book.isbn && item.id_user === user.id_user)
-                                    // console log aja dulu item ama book punya
+                                    readLaterListID.some(item => item.isbn === book.isbn && item.id_user === user.id_user)
                                 } 
                                 
                                 onClick={() => addToReadLater(book.isbn)}
