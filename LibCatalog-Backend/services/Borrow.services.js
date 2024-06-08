@@ -20,6 +20,7 @@ async function checkBorrowedBooks(id_user ,isbn) {
 }
 
 async function borrowBook(id_user, isbn) {
+    console.log("ID User di borrowBook service:", id_user);
     const deadline = new Date();
     deadline.setDate(deadline.getDate() + 7); 
     const query = `
@@ -47,10 +48,10 @@ async function returnBook(id_peminjaman) {
 async function getBorrowedBooksByISBNandUser(id_user, isbn) {
     const query = `
         SELECT * FROM peminjaman
-        WHERE id_user = $1 AND isbn = $2
+        WHERE id_user = $1 AND isbn = $2 AND status = 'sedang dipinjam'
     `;
-    const result = await pool.query(query, [id_user, isbn]);
-    return result.rows;
+    const result = await pool.query(query, [id_user, isbn, ]);
+    return result.rows[0];
 }
 
 module.exports = {

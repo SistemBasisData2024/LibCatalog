@@ -34,7 +34,8 @@ async function loginUser(req, res) {
 
     try {
         const user = await userServices.loginUser(username, password);
-        req.session.user = user.id_user;
+        req.session.user = user.id_user; // Set session user setelah login berhasil
+        console.log("Session user setelah login:", req.session.user); // Tambahkan logging di sini
         res.status(200).json({ message: "Login berhasil", data: user });
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
@@ -42,8 +43,9 @@ async function loginUser(req, res) {
 }
 
 async function borrowBook(req, res) {
-    const { isbn } = req.body;
-    const id_user = req.session.user;
+    const { id_user, isbn } = req.body;
+    
+    console.log("ID User di borrowBook:", id_user);
     try {
         const borrow = await borrowServices.borrowBook(id_user, isbn);
         if (borrow) {
@@ -73,10 +75,9 @@ async function returnBook(req, res) {
 }
 
 async function getBorrowedBooksByISBNandUser(req, res) {
-    const { isbn } = req.params;
-    const id_user = req.session.user;
+    const { id_user, isbn } = req.params;
     try {
-        const borrowedBooks = await borrowServices.getBorrowedBooksByISBNandUser(id_user, isbn);
+        const borrowedBooks = await borrowServices.getBorrowedBooksByISBNandUser(id_user, isbn,);
         res.status(200).json(borrowedBooks);
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });

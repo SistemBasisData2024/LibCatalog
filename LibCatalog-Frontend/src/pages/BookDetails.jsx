@@ -9,104 +9,110 @@ const BookDetail = () => {
   const { isbn } = useParams();
   const [book, setBook] = useState(null);
   const [isBorrowed, setIsBorrowed] = useState(false);
-  const [isReturned, setIsReturned] = useState(false);
-  const [borrowId, setborrowId] = useState(null);  
-  const [userId, setUserId] = useState(null);
+  const [borrowId, setBorrowId] = useState(null);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    localStorage.setItem("user", user.id_user);
-    let user = localStorage.getItem("user")
-    if (user) {
-      user = JSON.parse(user);
-      setUser(user);
+    let storedUser = localStorage.getItem("user")
+    if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        setUser(parsedUser);
+
+        // cari buku yang sedang di
+        fetch(`http://localhost:5000/borrow/${parsedUser.id_user}/${isbn}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if(data.length != 0){
+            setIsBorrowed(true);
+            console.log("udah dipinjem");
+            setBorrowId(data.data);
+          } else {
+            console.log("belom dipinjem");
+            setIsBorrowed(false);
+          }
+        })
+        .catch((err) => console.log(err));
+        
     }
-    setUserId(user.id_user);
+
+    fetch(`http://localhost:5000/book/${isbn}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setBook(data);
+        })
+        .catch((err) => console.log(err));
   }, []);
 
-
-  useEffect(() => {
-    // setUserId(`userId=${req.session.user.id_user}`);  
-    // const loggedInUser = localStorage.getItem("user");
-    // setUserId(JSON.parse(loggedInUser).id_user);
-    // const userId = document.cookie.split(';').find(c => c.startsWith('id_user=')).split('=')[1];'
-    // console.log("userId:", user);
-    const loggedInUser = localStorage.getItem("user");
-
-    setUserId(JSON.parse(loggedInUser).id_user);
-  
-    fetch(`http://localhost:5000/book/${isbn}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setBook(data);
-          fetch(`http://localhost:5000/borrow/${userId}/${isbn}`)
-          .then((response) => response.json()) 
-          .then((data) => {
-            if ( !data ) {
-              setIsBorrowed(true);
-              setIsReturned(false);
-              setborrowId(data.id_peminjaman);
-            } 
-            if ( data ) {
-              setIsBorrowed(false);
-              setIsReturned(true);
-            }
-          })
-      })
-      .catch((err) => console.log(err));
-  }, [isbn]);
-
-
   const handleBorrow = () => {
+    if (!user) {
+      toast.error('Please log in to borrow a book.');
+      return;
+    }
+
     fetch(`http://localhost:5000/borrow`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id_user: userId, isbn }),
+      body: JSON.stringify({ id_user : user.id_user, isbn }),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then((data) => {
         console.log("Response from server:", data);
         if (data.message === "Berhasil Meminjam Buku") {
           setIsBorrowed(true);
-          setIsReturned(false);
-          setborrowId(data.data); // Mengatur borrowId dengan id_peminjaman dari respons
+          setBorrowId(data[0].data);
           toast.success('Buku berhasil dipinjam!');
+        } 
+      })
+      .catch((err) => {
+        console.error('Error:', err);
+        toast.error('Gagal meminjam buku!');
+      });
+  };
+
+  const handleReturn = () => {
+    if (!borrowId) {
+      toast.error('No borrowed book found.');
+      return;
+    }
+
+    fetch(`http://localhost:5000/return/${borrowId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ status: 'sudah dikembalikan', id_peminjaman: borrowId, isbn }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        if (data.message === "Berhasil Mengembalikan Buku") {
+          setIsBorrowed(false);
+          toast.success('Buku berhasil dikembalikan!');
+          setBook((prevBook) => ({
+            ...prevBook,
+            status: 'sudah dikembalikan',
+          }));
         } else {
-          toast.error('Gagal meminjam buku!');
+          toast.error('Gagal mengembalikan buku!');
         }
       })
-      .catch((err) => console.log(err));
-};
-
-const handleReturn = () => {
-  console.log("borrowId:", borrowId); // Tambahkan ini untuk memeriksa borrowId
-  fetch(`http://localhost:5000/return/${borrowId}`, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ status, id_peminjaman: borrowId, isbn}),
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      if (data.message === "Berhasil Mengembalikan Buku") {
-        setIsReturned(true);
-        setIsBorrowed(false);
-        toast.success('Buku berhasil dikembalikan!');
-        // Perbarui status peminjaman di state aplikasi frontend
-        setBook((prevBook) => ({
-          ...prevBook,
-          status: 'sudah dikembalikan',
-        }));
-      } else {
+      .catch((err) => {
+        console.error('Error:', err);
         toast.error('Gagal mengembalikan buku!');
-      }
-    })
-    .catch((err) => console.log(err));
-};
+      });
+  };
 
   if (!book) {
     return <p>Loading book details...</p>;
@@ -134,11 +140,6 @@ const handleReturn = () => {
               )
             }
 
-            {/* {!isBorrowed && <button onClick={handleBorrow}>Borrow Book</button>}
-            {isBorrowed && !isReturned && <button onClick={handleReturn}>Return Book</button>} */}
-          
-          
-          
           </div>
         </div>
       </div>
