@@ -15,6 +15,7 @@ const BookDetail = () => {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    localStorage.setItem("user", user.id_user);
     let user = localStorage.getItem("user")
     if (user) {
       user = JSON.parse(user);
@@ -29,7 +30,9 @@ const BookDetail = () => {
     // const loggedInUser = localStorage.getItem("user");
     // setUserId(JSON.parse(loggedInUser).id_user);
     // const userId = document.cookie.split(';').find(c => c.startsWith('id_user=')).split('=')[1];'
+    // console.log("userId:", user);
     const loggedInUser = localStorage.getItem("user");
+
     setUserId(JSON.parse(loggedInUser).id_user);
   
     fetch(`http://localhost:5000/book/${isbn}`)

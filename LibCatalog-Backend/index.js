@@ -2,9 +2,8 @@ const cors = require('cors');
 const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-const profileRepo = require('./repository/profileRepo');
-const bookRepo = require('./repository/bookRepo');
 const userControllers = require('./controllers/User.controllers');
+const adminControllers = require('./controllers/Admin.controllers');
 const db = require('./db/db');
 require('dotenv').config();
 
@@ -26,15 +25,11 @@ app.use(session({
 app.use(cors());
 app.use(bodyParser.json()); 
 
-// Endpoint Profile
-app.post('/profile', profileRepo.register);
-app.get('/profile/:id', profileRepo.login);
-
 // Endpoint Book
-app.get('/home', bookRepo.getAllBooks);
-app.get('/home/genre/:genre', bookRepo.getGenre);
-app.get('/home/top', bookRepo.topFiveBooks);
-app.get('/book/:isbn', bookRepo.bookDetails); //ininini
+app.get('/home', userControllers.getAllBooks);
+app.get('/home/genre/:genre', userControllers.getGenre);
+app.get('/home/top', userControllers.topFiveBooks);
+app.get('/book/:isbn', userControllers.bookDetails); //ininini
 
 // Endpoint User
 app.get('/user/:id_user', userControllers.getUserProfile);
@@ -48,7 +43,8 @@ app.get('/readlater/:id_user', userControllers.getReadLater);
 app.delete('/readlater/:id_read_later', userControllers.deleteReadLater);
 app.post('/rating', userControllers.addRating);
 app.post('/register', userControllers.registerUser);
-app.post('/login', userControllers.loginUser);
+app.post('/login/user', userControllers.loginUser);
+// app.post('/login/admin', adminControllers.loginAdmin);
 
 
 // Logging

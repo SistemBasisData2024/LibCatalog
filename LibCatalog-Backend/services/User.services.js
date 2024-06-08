@@ -32,7 +32,6 @@ async function registerUser(nama, username, password) {
 }
 
 async function loginUser(username, password) {
-    
     const query = `
         SELECT * FROM "user"
         WHERE username = $1 AND password = $2
@@ -48,8 +47,6 @@ async function logoutUser(req, res) {
     req.session.destroy();
     res.status(200).json({ message: "Logout berhasil" });
 }
-
-
 
 module.exports = {
     getUserProfile,

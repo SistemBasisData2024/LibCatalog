@@ -32,7 +32,8 @@ const Login = () => {
     };
 
     const handleLoginAdmin = (event) => {
-        fetch("http://localhost:5000/login", {
+        event.preventDefault();
+        fetch("http://localhost:5000/login", { // jd admin
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -43,9 +44,10 @@ const Login = () => {
         .then((data) => {
             console.log(data);
             if (data.message === "Login berhasil") {
+                localStorage.setItem("admin", JSON.stringify(data.data));
                 clearForm();
                 alert("Login berhasil");
-                navigate("/home"); // ganti ke controller admin
+                // navigate("/home"); // ganti ke controller admin
             } else {
                 alert("Login gagal");
             }
@@ -54,7 +56,8 @@ const Login = () => {
     }
 
     const handleLoginUser = (event) => {
-        fetch("http://localhost:5000/login", {
+        event.preventDefault();
+        fetch("http://localhost:5000/login/user", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -65,9 +68,14 @@ const Login = () => {
         .then((data) => {
             console.log(data);
             if (data.message === "Login berhasil") {
-                clearForm();
-                alert("Login berhasil");
-                navigate("/home");
+                localStorage.setItem("user", JSON.stringify(data.data));
+                const loggedInUser = localStorage.getItem("user");
+                if (loggedInUser) {
+                    clearForm();
+                    alert("Login berhasil");
+                    navigate("/home");
+                    console.log("Login berhasil");
+                }
             } else {
                 alert("Login gagal");
             }
@@ -121,16 +129,16 @@ const Login = () => {
                 </div>
                 
                 <div className="form-group">
-                    {role === 'User'  ? (
-                        <button onClick={handleLoginUser} type="submit" className="register-button">
-                            LOGIN
-                        </button>
+                    {role === '' ? (
+                        <button disabled type="submit" className="register-button">Login</button>
                     ) : (
-                        <button onClick={handleLoginAdmin} type="submit" className="register-button">
-                            LOGIN
-                        </button>
-                    )
-                    }
+                        role === 'admin' ? (
+                            console.log("admin"),
+                            <button onClick={handleLoginAdmin} type="submit" className="register-button">LOGIN</button>
+                        ) : (
+                            <button onClick={handleLoginUser} type="submit" className="register-button">LOGIN</button>
+                        )
+                    )}
                 </div>
 
                 <div className="form-footer">

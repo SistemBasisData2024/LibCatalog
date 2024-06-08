@@ -2,6 +2,7 @@ const userServices = require('../services/User.services.js');
 const borrowServices = require('../services/Borrow.services.js');
 const reviewServices = require('../services/Review.services.js');
 const readLaterServices = require('../services/readLater.services.js');
+const bookServices = require('../services/Book.services.js');
 const bcrypt = require('bcrypt');
 
 async function getUserProfile(req, res) {
@@ -39,8 +40,6 @@ async function loginUser(req, res) {
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
-
-
 
 async function borrowBook(req, res) {
     const { isbn } = req.body;
@@ -158,7 +157,53 @@ async function getReadLater(req, res) {
     }
 }
 
+// BOOK
+// HOME PAGE    --> GET getAllBooks, GET getGenre, GET topFiveBooks
+// BOOK DETAIL  --> GET bookDetails
 
+async function getAllBooks(req, res) {
+    try {
+        const result = await bookServices.getAllBooks();
+        res.status(200).json(result);
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+async function getGenre(req, res) {
+    const genre = req.params.genre;
+
+    try {
+        const result = await bookServices.getGenre(genre);
+        if (result.length > 0) {
+            res.status(200).json(result);
+        } else {
+            res.status(404).json({ error: "Genre not found" });
+        }
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
+async function topFiveBooks(req, res) {
+    try {
+        const topBooks = await bookServices.topFiveBooks();
+        res.status(200).json(topBooks);
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
+async function bookDetails(req, res) {
+    const { isbn } = req.params;
+
+    try {
+        const result = await bookServices.bookDetails(isbn);
+        res.status(200).json(result);
+    } catch (result) {
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
 
 module.exports = {
     getUserProfile,
@@ -172,5 +217,10 @@ module.exports = {
     deleteReadLater,
     getReadLater,
     registerUser,
-    loginUser
+    loginUser,
+    // Untuk Buku
+    getAllBooks,
+    getGenre,
+    topFiveBooks,
+    bookDetails,
 };
