@@ -20,7 +20,6 @@ async function checkBorrowedBooks(id_user ,isbn) {
 }
 
 async function borrowBook(id_user, isbn) {
-    console.log("ID User di borrowBook service:", id_user);
     const deadline = new Date();
     deadline.setDate(deadline.getDate() + 7); 
     const query = `

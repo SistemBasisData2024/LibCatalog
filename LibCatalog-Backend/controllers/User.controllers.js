@@ -44,8 +44,6 @@ async function loginUser(req, res) {
 
 async function borrowBook(req, res) {
     const { id_user, isbn } = req.body;
-    
-    console.log("ID User di borrowBook:", id_user);
     try {
         const borrow = await borrowServices.borrowBook(id_user, isbn);
         if (borrow) {
@@ -78,7 +76,11 @@ async function getBorrowedBooksByISBNandUser(req, res) {
     const { id_user, isbn } = req.params;
     try {
         const borrowedBooks = await borrowServices.getBorrowedBooksByISBNandUser(id_user, isbn,);
-        res.status(200).json(borrowedBooks);
+        if (!borrowedBooks){
+            res.status(200).json({ message: "From backend: buku belum dipinjam" });
+        } else {
+            res.status(200).json(borrowedBooks);
+        }
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
     }

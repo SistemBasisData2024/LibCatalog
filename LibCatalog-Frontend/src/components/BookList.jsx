@@ -86,12 +86,7 @@ const BookList = () => {
             <p className='text-center text-base text-[black] mb-5'>This Lorem Ipsum was written manually Ohio sigma fanum tax 1550s</p>
             
             <div className="flex justify-center items-center gap-[15px]">
-                <button className={`${selectedGenre === '' ? 
-                    'bg-[#CBB595] font-[bold] text-[black] text-center no-underline inline-block text-sm mx-0.5 my-1 p-3.5 rounded-xl border-[1.5px] border-solid border-[black] scale-110'
-                    // 'bg-[#CBB595] font-[bold] text-center no-underline inline-block text-sm mx-0.5 my-1 p-3.5 rounded-xl border-[1.5px] border-solid border-[black] scale-110'
-                    : 
-                    'bg-[#fbfff1] font-[bold] text-[black] text-center no-underline inline-block text-sm transition-transform duration-[0.2s] ease-[ease-in-out] mx-0.5 my-1 p-3.5 rounded-xl border-[1.5px] border-solid border-[black] hover:bg-[#CBB595] hover:text-[black] hover:border-[1.5px] hover:border-solid hover:border-[black] hover:scale-110'
-                }`} 
+                <button className={`genreButton ${selectedGenre === '' ? 'active' : ''}`} 
                     onClick={() => 
                         fetch("http://localhost:5000/home")
                             .then(response => response.json())

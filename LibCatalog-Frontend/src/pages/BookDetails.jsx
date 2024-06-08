@@ -22,26 +22,27 @@ const BookDetail = () => {
         fetch(`http://localhost:5000/borrow/${parsedUser.id_user}/${isbn}`)
         .then((response) => response.json())
         .then((data) => {
-          if(data.length != 0){
+          if(data.message == null){
             setIsBorrowed(true);
-            console.log("udah dipinjem");
-            setBorrowId(data.data);
+            setBorrowId(data.id_peminjaman);
           } else {
-            console.log("belom dipinjem");
             setIsBorrowed(false);
           }
         })
         .catch((err) => console.log(err));
         
-    }
-
-    fetch(`http://localhost:5000/book/${isbn}`)
-        .then((response) => response.json())
-        .then((data) => {
-          setBook(data);
-        })
-        .catch((err) => console.log(err));
+        initializeBook();
+    }    
   }, []);
+
+  const initializeBook = () => {
+    fetch(`http://localhost:5000/book/${isbn}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setBook(data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const handleBorrow = () => {
     if (!user) {
@@ -66,7 +67,8 @@ const BookDetail = () => {
         console.log("Response from server:", data);
         if (data.message === "Berhasil Meminjam Buku") {
           setIsBorrowed(true);
-          setBorrowId(data[0].data);
+          setBorrowId(data.data);
+          initializeBook();
           toast.success('Buku berhasil dipinjam!');
         } 
       })
@@ -77,7 +79,8 @@ const BookDetail = () => {
   };
 
   const handleReturn = () => {
-    if (!borrowId) {
+    if (borrowId == null) {
+      console.log(borrowId);
       toast.error('No borrowed book found.');
       return;
     }
@@ -100,10 +103,11 @@ const BookDetail = () => {
         if (data.message === "Berhasil Mengembalikan Buku") {
           setIsBorrowed(false);
           toast.success('Buku berhasil dikembalikan!');
-          setBook((prevBook) => ({
-            ...prevBook,
-            status: 'sudah dikembalikan',
-          }));
+          // setBook((prevBook) => ({
+          //   ...prevBook,
+          //   status: 'sudah dikembalikan',
+          // }));
+          initializeBook();
         } else {
           toast.error('Gagal mengembalikan buku!');
         }
