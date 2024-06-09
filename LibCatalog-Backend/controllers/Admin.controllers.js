@@ -73,11 +73,11 @@ async function updateBook (req, res) {
 }
 
 async function deleteBook (req, res) {
-    const { isbn } = req.body;
+    const { isbn } = req.params;
     try {
         const book = await bookServices.deleteBook(isbn);
         if (book) {
-            res.status(200).json({ message: "Book deleted succesfully!", data: book });
+            res.status(200).json({ message: "Book deleted succesfully!" });
         } else {
             res.status(404).json({ error: "Failed to delete book" });
         }

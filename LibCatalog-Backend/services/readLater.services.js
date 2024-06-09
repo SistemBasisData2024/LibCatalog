@@ -21,16 +21,13 @@ async function getReadLater (id_user) {
     return result.rows;
 }
 
-async function deleteReadLater (id_user, isbn) {
+async function deleteReadLater (id_read_later) {
     const query = `
         DELETE FROM "readLater"
-        WHERE id_user = $1 AND isbn = $2
-        RETURNING *
+        WHERE id_read_later = $1
     `;
-    const result = await pool.query(query, [id_user, isbn]);
-    return result.rows[0];
+    await pool.query(query, [id_read_later]);
 }
-
 module.exports = {
     addReadLater,
     getReadLater,

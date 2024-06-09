@@ -31,13 +31,14 @@ app.get('/topfive', userControllers.topFiveBooks);
 app.get('/book/:isbn', userControllers.bookDetails);
 app.post('/book/', adminControllers.addBook);
 app.put('/book/:isbn', adminControllers.updateBook);
-app.delete('/book/:isbn', adminControllers.updateBook);
+app.delete('/book/:isbn', adminControllers.deleteBook);
 
 // Endpoint Account
 app.get('/user/:id_user', userControllers.getUserProfile);
 app.post('/borrow', userControllers.borrowBook);
 app.put('/return/:id_peminjaman', userControllers.returnBook);
 app.get('/borrow/:id_user/:isbn', userControllers.getBorrowedBooksByISBNandUser);
+app.get('/borrow/:id_user', userControllers.getBorrowedBooksByUser);
 app.post('/review', userControllers.addReview);
 app.get('/review/:isbn', userControllers.getReviews);
 

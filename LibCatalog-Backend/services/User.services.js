@@ -41,13 +41,19 @@ async function registerUser(nama, username, password) {
 async function loginUser(username, password) {
     const query = `
         SELECT * FROM "user"
-        WHERE username = $1 AND password = $2
-    `;
-    const result = await pool.query(query, [username, password]);
+    WHERE username = $1
+`;
+    const result = await pool.query(query, [username]);
     if (result.rows.length <= 0) {
         throw new Error("Invalid username or password");
     }
-    return result.rows[0];
+
+    const user = result.rows[0];
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
+        throw new Error("Invalid username or password");
+    }
+    return user;
 }
 
 async function logoutUser(req, res) {

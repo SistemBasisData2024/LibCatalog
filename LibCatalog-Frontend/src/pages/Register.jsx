@@ -2,6 +2,8 @@ import './Register.css';
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
     const [fullName, setFullName] = useState("");
@@ -33,6 +35,7 @@ const Register = () => {
 
     const handleRegister = async (event) => {
         event.preventDefault();
+    
         const formData = {
             nama: fullName,
             username: username,
@@ -49,20 +52,25 @@ const Register = () => {
                 },
                 body: JSON.stringify(formData),
             });
-
+    
             if (response.ok) {
-                alert("Account created!");
+                toast.success("Account created!");
                 console.log('Form Data: ', formData);
                 clearForm();
             } else {
                 const errorData = await response.json();
-                alert(`Error: ${errorData.error}`);
+                if (errorData.error === "Username already exists") {
+                    toast.error("Username already exists");
+                } else {
+                    toast.error(`Error: Username already exists`);
+                }
             }
         } catch (error) {
             console.error('Error during registration:', error);
-            alert('An error occurred during registration.');
+            toast.error('An error occurred during registration.');
         }
     };
+    
 
     return (
         <div>
@@ -129,7 +137,7 @@ const Register = () => {
                         <label>
                             Already have an account? 
                         </label>
-                        <Link to="/" className="text-blue-600"> Login</Link>
+                        <Link to="/login" className="text-blue-600"> Login</Link>
                     </div>
                 </form>
             </div>

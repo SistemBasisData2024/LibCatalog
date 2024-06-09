@@ -53,10 +53,21 @@ async function getBorrowedBooksByISBNandUser(id_user, isbn) {
     return result.rows[0];
 }
 
+async function getBorrowedBooksByUser(id_user) {
+    const query = `
+        SELECT * FROM peminjaman
+        WHERE id_user = $1 AND status = 'sedang dipinjam'
+    `;
+    const result = await pool.query(query, [id_user]);
+    return result.rows;
+}
+
+
 module.exports = {
     updateQuantity,
     borrowBook,
     returnBook,
     checkBorrowedBooks,
-    getBorrowedBooksByISBNandUser
+    getBorrowedBooksByISBNandUser,
+    getBorrowedBooksByUser,
 };

@@ -77,7 +77,7 @@ const Navbar = () => {
                                         </div>
                                         <ul>
                                             <li>
-                                                <a href="http://localhost:5000/userProfile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                                            <Link to="/userProfile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
                                             </li>
                                             <li>
                                                 <a onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
