@@ -30,9 +30,8 @@ const BookDetail = () => {
           }
         })
         .catch((err) => console.log(err));
-        
-        initializeBook();
-    }    
+    }
+    initializeBook();
   }, []);
 
   const initializeBook = () => {

@@ -12,10 +12,7 @@ const BookList = () => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:5000/home")
-            .then((response) => response.json())
-            .then((data) => setBackendData(data))
-            .catch((err) => console.log(err));
+        fetchAllBooks();
 
         let storedUser = localStorage.getItem("user")
         if (storedUser) {
@@ -29,30 +26,30 @@ const BookList = () => {
         }
     }, []);
 
-    const fetchBooksByGenre = (genre) => {
-        fetch(`http://localhost:5000/home/genre/${genre}`)
+    const fetchAllBooks = () => {
+        fetch("http://localhost:5000/allbooks")
+            .then((response) => response.json())
+            .then((data) => setBackendData(data))
+            .catch((err) => console.log(err));
+    };
+
+    const handleGenreClick = (genre) => {
+        fetch(`http://localhost:5000/genre/${genre}`)
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`Genre ${genre} not found`);
                 }
                 return response.json();
             })
-            .then((data) => setBackendData(data))
+            .then((data) => {
+                setBackendData(data)
+                setSelectedGenre(genre);
+            })
             .catch((err) => {
-                toast.error(`Genre ${genre} is empty. Redirecting to All Books...`);
-                fetch("http://localhost:5000/home")
-                    .then((response) => response.json())
-                    .then((data) => {
-                        setBackendData(data);
-                        setSelectedGenre('');
-                    })
-                    .catch((err) => console.log(err));
-            });
-    };
-
-    const handleGenreClick = (genre) => {
-        fetchBooksByGenre(genre);
-        setSelectedGenre(genre);
+                toast.error(`Genre ${genre} is empty. Redirecting to All Books...`);      
+                fetchAllBooks();
+                setSelectedGenre('');
+        });
     };
 
 
@@ -87,13 +84,10 @@ const BookList = () => {
             
             <div className="flex justify-center items-center gap-[15px]">
                 <button className={`genreButton ${selectedGenre === '' ? 'active' : ''}`} 
-                    onClick={() => 
-                        fetch("http://localhost:5000/home")
-                            .then(response => response.json())
-                            .then(data => { 
-                                setBackendData(data); 
-                                setSelectedGenre(''); 
-                            })}>
+                    onClick={() => {
+                        fetchAllBooks()
+                        setSelectedGenre('')}
+                }>
                     All Books
                 </button>
                 <button
@@ -151,7 +145,7 @@ const BookList = () => {
                                     readLaterListID.some(item => item.isbn === book.isbn && item.id_user === user.id_user)
                                 } 
                                 
-                                onClick={() => addToReadLater(book.isbn)}
+                                onClick={() => (user ? addToReadLater(book.isbn) : toast.error('Please login to add to Read Later list'))}
                             >
                                 🕮
                             </button>

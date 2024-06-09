@@ -26,9 +26,9 @@ app.use(cors());
 app.use(bodyParser.json()); 
 
 // Endpoint Book
-app.get('/home', userControllers.getAllBooks);
-app.get('/home/genre/:genre', userControllers.getGenre);
-app.get('/home/top', userControllers.topFiveBooks);
+app.get('/allbooks', userControllers.getAllBooks);
+app.get('/genre/:genre', userControllers.getGenre);
+app.get('/topfive', userControllers.topFiveBooks);
 app.get('/book/:isbn', userControllers.bookDetails); //ininini
 
 // Endpoint User

@@ -6,7 +6,7 @@ const TopFive = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
-        fetch("http://localhost:5000/home/top")
+        fetch("http://localhost:5000/topfive")
             .then((response) => response.json())
             .then((data) => setTopBooks(data))
             .catch((err) => console.log(err));
