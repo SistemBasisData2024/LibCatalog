@@ -31,17 +31,37 @@ const Register = () => {
         setRole("");
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        alert("Account created!");
+
         const formData = {
-            fullName,
-            username,
-            password,
-            role,
+            nama: fullName,
+            username: username,
+            password: password.value,
+            role: role,
         };
-        console.log('Form Data: ', formData);
-        clearForm();
+
+        try {
+            const response = await fetch('http://localhost:5000/register/user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            if (response.ok) {
+                alert("Account created!");
+                console.log('Form Data: ', formData);
+                clearForm();
+            } else {
+                const errorData = await response.json();
+                alert(`Error: ${errorData.error}`);
+            }
+        } catch (error) {
+            console.error('Error during registration:', error);
+            alert('An error occurred during registration.');
+        }
     };
 
     return (
