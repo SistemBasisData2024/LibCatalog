@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { Link } from "react-router-dom";
+import { Link, useLocation  } from "react-router-dom";
 
 const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const [user, setUser] = useState(null);
+    const location = useLocation();
     // const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
@@ -73,18 +74,20 @@ const Navbar = () => {
                                 )}
                             </div>
                         ) : (
-                            <div>
-                                <Link to="/login">
-                                <button className="ml-4 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-white hover:bg-gray-300 focus:outline-none">
-                                    Login
-                                </button>
-                                </Link>
-                                <Link to="/register">
-                                <button className="mr-4 ml-4 py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-white hover:bg-gray-300 focus:outline-none">
-                                    Sign Up
-                                </button>
-                                </Link>
-                            </div>
+                            (location.pathname === '/login' || location.pathname === '/register') ? null : (
+                                <div>
+                                    <Link to="/login">
+                                        <button className="ml-4 py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-white hover:bg-gray-300 focus:outline-none">
+                                            Login
+                                        </button>
+                                    </Link>
+                                    <Link to="/register">
+                                        <button className="mr-4 ml-4 py-2 px-3 border border-transparent shadow-sm text-sm font-medium rounded-md text-black bg-white hover:bg-gray-300 focus:outline-none">
+                                            Sign Up
+                                        </button>
+                                    </Link>
+                                </div>
+                            )
                         )}
                         
                         {/* {dropdownOpen && (

@@ -56,7 +56,7 @@ const Register = () => {
                 clearForm();
             } else {
                 const errorData = await response.json();
-                alert(`Error: ${errorData.error}`);
+                alert(`message: ${errorData.message}`);
             }
         } catch (error) {
             console.error('Error during registration:', error);
@@ -128,7 +128,7 @@ const Register = () => {
                         <label>
                             Already have an account? 
                         </label>
-                        <Link to="/" className="text-blue-600"> Login</Link>
+                        <Link to="/login" className="text-blue-600"> Login</Link>
                     </div>
                 </form>
             </div>

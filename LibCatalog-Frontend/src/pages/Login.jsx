@@ -148,7 +148,7 @@ const Login = () => {
                         <label>
                             Don't have an account? 
                         </label>
-                        <Link to="/Register" className="text-blue-600"> Register</Link>
+                        <Link to="/register" className="text-blue-600"> Register</Link>
                     </div>
                 </form>
             </div>
