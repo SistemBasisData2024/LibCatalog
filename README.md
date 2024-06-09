@@ -20,7 +20,7 @@ LibCatalog merupakan sebuah project dengan implementasi sistem management perpus
 ### UML
 
 ### FLowchart
-![Flowchart]()
+![Flowchart](https://cdn.discordapp.com/attachments/676267084732170251/1249361036440633407/Diagram_Tanpa_Judul.drawio_31.png?ex=666705a3&is=6665b423&hm=b51485a43aa979298cbc5505e9f1a6e15655f7b6e4500ab95f4090ab646badca&)
 
 ## ⛩ Table : 
 
@@ -94,7 +94,7 @@ npm install
 
 - Run Frontend
 ```
-npm run dev
+npm run start
 
 ```
 
@@ -111,8 +111,14 @@ npm install
 
 - Run Frontend
 ```
-npm run start
+npm run dev
 
 ```
 
+## 🗓️ Progress Meeting 
+- Meet Pertama
+![Foto1](https://cdn.discordapp.com/attachments/676267084732170251/1249360966039375892/image.png?ex=66670592&is=6665b412&hm=70c982700314a464fdad8c428efb43b061aed73aec0949a21780561a59a9790a&)
+
+- Meet Kedua
+![Foto2](https://cdn.discordapp.com/attachments/676267084732170251/1249362456502075454/image.png?ex=666706f5&is=6665b575&hm=a8de8e1dd5d86ac33270547f04347a9a560cdf855a56ee32fd501e51da4985f4&)
 
