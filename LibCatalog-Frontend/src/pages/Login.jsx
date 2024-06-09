@@ -2,10 +2,11 @@ import './Login.css';
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
     const navigate = useNavigate();
-    const [fullName, setFullName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState({
         value: "",
@@ -14,7 +15,6 @@ const Login = () => {
     const [role, setRole] = useState("");
 
     const clearForm = () => {
-        setFullName("");
         setUsername("");
         setPassword({
             value: "",
@@ -38,13 +38,16 @@ const Login = () => {
             if (data.message === "Login berhasil") {
                 localStorage.setItem("admin", JSON.stringify(data.data));
                 clearForm();
-                alert("Login berhasil");
+                toast.success("Login berhasil");
                 navigate("/admin");
             } else {
-                alert("Login gagal");
+                toast.error("Login gagal");
             }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            console.log(err);
+            toast.error("Terjadi kesalahan");
+        });
     }
 
     const handleLoginUser = (event) => {
@@ -64,21 +67,25 @@ const Login = () => {
                 const loggedInUser = localStorage.getItem("user");
                 if (loggedInUser) {
                     clearForm();
-                    alert("Login berhasil");
+                    toast.success("Login berhasil");
                     navigate("/");
                     console.log("Login berhasil");
                 }
             } else {
-                alert("Login gagal");
+                toast.error("Login gagal");
             }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+            console.log(err);
+            toast.error("Terjadi kesalahan");
+        });
     }
 
     return (
         <div>
             <Navbar />
             <div className="register-form-container">
+                <ToastContainer />
                 <form className="register-form">
                     <h2 className="form-title">Login</h2>
                     <div className="form-group">
@@ -103,9 +110,6 @@ const Login = () => {
                             onBlur={() => setPassword({ ...password, isTouched: true })}
                             placeholder="Password"
                         />
-                        {/* {password.isTouched && password.value.length < 8 && (
-                            <PasswordErrorMessage />
-                        )} */}
                     </div>
                     <div className="form-group">
                         <label>
@@ -126,7 +130,6 @@ const Login = () => {
                             <button disabled type="submit" className="register-button">Login</button>
                         ) : (
                             role === 'admin' ? (
-                                console.log("admin"),
                                 <button onClick={handleLoginAdmin} type="submit" className="register-button">LOGIN</button>
                             ) : (
                                 <button onClick={handleLoginUser} type="submit" className="register-button">LOGIN</button>

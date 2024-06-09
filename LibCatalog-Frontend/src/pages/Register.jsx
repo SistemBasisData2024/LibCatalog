@@ -1,11 +1,12 @@
 import './Register.css';
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
+    const navigate = useNavigate();
     const [fullName, setFullName] = useState("");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState({
@@ -55,14 +56,16 @@ const Register = () => {
     
             if (response.ok) {
                 toast.success("Account created!");
-                console.log('Form Data: ', formData);
                 clearForm();
+                setTimeout(() => {
+                    navigate("/login");
+                }, 1500); // Delay to show the toast message
             } else {
                 const errorData = await response.json();
                 if (errorData.error === "Username already exists") {
                     toast.error("Username already exists");
                 } else {
-                    toast.error(`Error: Username already exists`);
+                    toast.error("Error: Username already exists");
                 }
             }
         } catch (error) {
@@ -76,6 +79,7 @@ const Register = () => {
         <div>
             <Navbar />
             <div className="register-form-container">
+                <ToastContainer />
                 <form className="register-form" onSubmit={handleRegister}>
                     {console.log(role)}
                     <h2 className="form-title">Sign Up</h2>

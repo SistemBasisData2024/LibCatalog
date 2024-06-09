@@ -1,6 +1,6 @@
 ## LibCatalog
 
-LibCatalog merupakan sebuah project dengan implementasi sistem management perpustakaan
+LibCatalog merupakan sebuah Webiste user friendly dengan implementasi sistem management Perpustakaan. Website ini dapat menampilkan daftar buku beserta cover buku dan detail dari bukunya. Website ini juga dapat melakukan peminjaman dan pengembalian buku, serta dapat memberikan rating buku yang telah dibaca. Jumlah buku yang dipinjam dan dikembalikan akan di-update secara berkala. Website dapat melakukan filterisasi buku berdasarkan parameter
 
 ## Anggota :
 - Monica Vierin Pasman (2206029405)
@@ -10,7 +10,7 @@ LibCatalog merupakan sebuah project dengan implementasi sistem management perpus
 
 ## 🖥️ Tech Stack : 
 
-![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white) ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Session](https://img.shields.io/badge/Session-grey?style=for-the-badge&logo=Session) 
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white) ![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E) ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB) ![NPM](https://img.shields.io/badge/NPM-%23000000.svg?style=for-the-badge&logo=npm&logoColor=white) ![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white) ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB) ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) ![Session](https://img.shields.io/badge/Session-grey?style=for-the-badge&logo=Session)
 
 ## 📈 Diagram : 
 
