@@ -46,7 +46,7 @@ app.post('/review', userControllers.addReview);
 app.get('/review/:isbn', userControllers.getReviews);
 app.post('/rating', userControllers.addRating);
 
-app.post('/readlater/:id_user/:isbn', userControllers.addReadLater);
+app.post('/readlater', userControllers.addReadLater);
 app.get('/readlater/:id_user', userControllers.getReadLater);
 app.delete('/readlater/:id_read_later', userControllers.deleteReadLater);
 
