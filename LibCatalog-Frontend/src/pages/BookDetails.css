@@ -3,12 +3,6 @@ body {
   margin: 0;
 }
 
-.book-review-container {
-  display: flex;
-  justify-content: center;
-  min-height: 100vh;
-}
-
 .book-details-container {
   display: flex;
   justify-content: center;
@@ -25,6 +19,7 @@ body {
   overflow: hidden;
   height: 500px;
   width: 1250px;
+  margin-bottom: 20px; 
 }
 
 .book-detail-cover {
@@ -70,16 +65,102 @@ body {
   background-color: #204a8a;
 }
 
-.book-review-container .book-detail-frame {
+.book-review-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  min-height: 540px;
+  margin-bottom: 30px;
+}
+
+.reviews-section {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  padding: 20px;
+  width: 750px; 
+  margin-right: 20px;
+  margin-bottom: 20px; 
+}
+
+.reviews-section h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #000000;
+  font-weight: bold;
+}
+
+.reviews-section p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.reviews-list {
+  margin-top: 20px;
+  display: flex;
   flex-direction: column;
 }
 
-.book-review-container .book-detail-frame h1 {
-  font-size: 24px;
-  margin-bottom: 10px;
+.review-item {
+  background-color: #f8f8f8;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px; 
 }
 
-.book-review-container .book-detail-frame p {
-  font-size: 16px;
+.review-item p {
+  margin-bottom: 5px;
+  color: #555;
 }
-  
+
+.review-item p.rating {
+  font-weight: bold;
+  color: #3066be;
+}
+
+.add-review {
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  padding: 20px;
+  width: 450px; 
+  margin-bottom: 20px; 
+}
+
+.add-review h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #000000;
+  font-weight: bold;
+}
+
+.add-review input,
+.add-review textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #555;
+}
+
+.add-review button {
+  padding: 12px 24px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #3066be;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-review button:hover {
+  background-color: #204a8a;
+}

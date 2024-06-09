@@ -16,8 +16,7 @@ async function getReadLater (id_user) {
         SELECT * FROM "readLater"
         WHERE id_user = $1
     `;
-    const result
-    = await pool.query(query, [id_user]);
+    const result = await pool.query(query, [id_user]);
     return result.rows;
 }
 
