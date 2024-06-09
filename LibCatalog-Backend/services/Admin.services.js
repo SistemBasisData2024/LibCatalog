@@ -11,8 +11,7 @@ async function getAdminProfile(id_admin) {
 }
 
 async function registerAdmin(nama, username, password) {
-    if (!nama || !username || !password
-    ) {
+    if (!nama || !username || !password) {
         throw new Error("All fields are required");
     }
     if (password.length < 8) {

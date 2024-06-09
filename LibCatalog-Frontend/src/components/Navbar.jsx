@@ -4,15 +4,23 @@ import { Link, useLocation  } from "react-router-dom";
 
 const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const [user, setUser] = useState(null);
     const location = useLocation();
+    const [userOrAdmin, setUserOrAdmin] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(false);
     // const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         let storedUser = localStorage.getItem("user")
         if (storedUser) {
             const parsedUser = JSON.parse(storedUser);
-            setUser(parsedUser);
+            setUserOrAdmin(parsedUser);
+        }
+
+        let storedAdmin = localStorage.getItem("admin")
+        if (storedAdmin) {
+            const parsedAdmin = JSON.parse(storedAdmin);
+            setUserOrAdmin(parsedAdmin);
+            setIsAdmin(true);
         }
     }, []);
 
@@ -26,7 +34,8 @@ const Navbar = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("user");
-        setUser();
+        localStorage.removeItem("admin");
+        setUserOrAdmin();
         toast.success("Successfully logged out.");
     };
 
@@ -44,23 +53,27 @@ const Navbar = () => {
                 </ul>
                 <div className="flex items-center space-x-4">
                     <div className="relative">
-                        {user ? (
+                        { userOrAdmin ? (
                             <div>
                                 <div className="flex items-center" onClick={toggleDropdown}>
                                     <button className="flex items-center text-white focus:outline-none">
-                                        <img className="mr-4 w-12 h-12 rounded-full" src="https://static.vecteezy.com/system/resources/thumbnails/010/260/479/small/default-avatar-profile-icon-of-social-media-user-in-clipart-style-vector.jpg" alt="User Avatar" />
+                                        { isAdmin ? (
+                                            <img className="mr-4 w-12 h-12 rounded-full" src="https://static.vecteezy.com/system/resources/thumbnails/002/387/693/small_2x/user-profile-icon-free-vector.jpg" alt="User Avatar" />
+                                        ) : 
+                                            (<img className="mr-4 w-12 h-12 rounded-full" src="https://static.vecteezy.com/system/resources/thumbnails/010/260/479/small/default-avatar-profile-icon-of-social-media-user-in-clipart-style-vector.jpg" alt="User Avatar" />)
+                                        }
                                     </button>
                                     <div className="text-left mr-8">
                                         <span className="block text-sm text-white">Welcome</span>
-                                        <span className="block text-sm text-white">{user.nama}</span>
+                                        <span className="block text-sm text-white">{userOrAdmin.nama}</span>
                                     </div>
                                 </div>
                             
                                 {dropdownOpen && (
                                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-50">
                                         <div className="px-4 py-3">
-                                            <span className="block text-sm text-gray-900">{user.nama}</span>
-                                            <span className="block text-sm text-gray-500 truncate">{user.username}</span>
+                                            <span className="block text-sm text-gray-900">{userOrAdmin.nama}</span>
+                                            <span className="block text-sm text-gray-500 truncate">{userOrAdmin.username}</span>
                                         </div>
                                         <ul>
                                             <li>

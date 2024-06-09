@@ -25,7 +25,7 @@ const Login = () => {
 
     const handleLoginAdmin = (event) => {
         event.preventDefault();
-        fetch("http://localhost:5000/login", { // jd admin
+        fetch("http://localhost:5000/login/admin", { // jd admin
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -39,7 +39,7 @@ const Login = () => {
                 localStorage.setItem("admin", JSON.stringify(data.data));
                 clearForm();
                 alert("Login berhasil");
-                // navigate("/home"); // ganti ke controller admin
+                navigate("/admin");
             } else {
                 alert("Login gagal");
             }
@@ -76,68 +76,71 @@ const Login = () => {
     }
 
     return (
-        <div className="register-form-container">
-            <form className="register-form">
-                <h2 className="form-title">Login</h2>
-                <div className="form-group">
-                    <label>
-                        Username <sup>*</sup>
-                    </label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Username"
-                    />
-                </div>
-                <div className="form-group">
-                    <label>
-                        Password <sup>*</sup>
-                    </label>
-                    <input
-                        value={password.value}
-                        type="password"
-                        onChange={(e) => setPassword({ ...password, value: e.target.value })}
-                        onBlur={() => setPassword({ ...password, isTouched: true })}
-                        placeholder="Password"
-                    />
-                    {password.isTouched && password.value.length < 8 && (
-                        <PasswordErrorMessage />
-                    )}
-                </div>
-                <div className="form-group">
-                    <label>
-                        Role <sup>*</sup>
-                    </label>
-                    <select
-                        value={role}
-                        onChange={(e) => setRole(e.target.value)}
-                        required
-                    >
-                        <option value="" disabled>Select role</option>
-                        <option value="user">User</option>
-                        <option value="admin">Admin</option>
-                    </select>
-                </div>
-                <div className="form-group">
-                    {role === '' ? (
-                        <button disabled type="submit" className="register-button">Login</button>
-                    ) : (
-                        role === 'admin' ? (
-                            console.log("admin"),
-                            <button onClick={handleLoginAdmin} type="submit" className="register-button">LOGIN</button>
+        <div>
+            <Navbar />
+            <div className="register-form-container">
+                <form className="register-form">
+                    <h2 className="form-title">Login</h2>
+                    <div className="form-group">
+                        <label>
+                            Username <sup>*</sup>
+                        </label>
+                        <input
+                            type="text"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            placeholder="Username"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label>
+                            Password <sup>*</sup>
+                        </label>
+                        <input
+                            value={password.value}
+                            type="password"
+                            onChange={(e) => setPassword({ ...password, value: e.target.value })}
+                            onBlur={() => setPassword({ ...password, isTouched: true })}
+                            placeholder="Password"
+                        />
+                        {/* {password.isTouched && password.value.length < 8 && (
+                            <PasswordErrorMessage />
+                        )} */}
+                    </div>
+                    <div className="form-group">
+                        <label>
+                            Role <sup>*</sup>
+                        </label>
+                        <select
+                            value={role}
+                            onChange={(e) => setRole(e.target.value)}
+                            required
+                        >
+                            <option value="" disabled>Select role</option>
+                            <option value="user">User</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div className="form-group">
+                        {role === '' ? (
+                            <button disabled type="submit" className="register-button">Login</button>
                         ) : (
-                            <button onClick={handleLoginUser} type="submit" className="register-button">LOGIN</button>
-                        )
-                    )}
-                </div>
-                <div className="form-footer">
-                    <label>
-                        Don't have an account? 
-                    </label>
-                    <Link to="/Register" className="text-blue-600"> Register</Link>
-                </div>
-            </form>
+                            role === 'admin' ? (
+                                console.log("admin"),
+                                <button onClick={handleLoginAdmin} type="submit" className="register-button">LOGIN</button>
+                            ) : (
+                                <button onClick={handleLoginUser} type="submit" className="register-button">LOGIN</button>
+                            )
+                        )}
+                    </div>
+                    <div className="form-footer">
+                        <label>
+                            Don't have an account? 
+                        </label>
+                        <Link to="/register" className="text-blue-600"> Register</Link>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

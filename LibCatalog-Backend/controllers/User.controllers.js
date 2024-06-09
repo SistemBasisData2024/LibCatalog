@@ -26,7 +26,7 @@ async function registerUser(req, res) {
         res.status(201).json({ message: "Successfully Registered", data: user });
     } catch (error) {
         console.error('Error during user registration:', error.message);
-        res.status(500).json({ error: "Internal Server Error" });
+        res.status(500).json({ message: "Username already exists" });
     }
 }
 

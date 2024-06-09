@@ -9,7 +9,8 @@ const BookList = () => {
     const [selectedGenre, setSelectedGenre] = useState('');
     const [readLaterList, setReadLaterList] = useState([]);
     const [readLaterListID, setReadLaterListID] = useState([]);
-    const [user, setUser] = useState(null);
+    const [userOrAdmin, setUserOrAdmin] = useState(null);
+    const [isAdmin, setIsAdmin] = useState(null);
 
     useEffect(() => {
         fetchAllBooks();
@@ -17,12 +18,20 @@ const BookList = () => {
         let storedUser = localStorage.getItem("user")
         if (storedUser) {
             const parsedUser = JSON.parse(storedUser);
-            setUser(parsedUser);
+            setUserOrAdmin(parsedUser);
+            setIsAdmin(false);
 
             fetch(`http://localhost:5000/readlater/${parsedUser.id_user}`)
                 .then((response) => response.json())
                 .then((data) => setReadLaterListID(data))
                 .catch((err) => console.log(err));
+        }
+
+        let storedAdmin = localStorage.getItem("admin")
+        if (storedAdmin) {
+            const parsedAdmin = JSON.parse(storedAdmin);
+            setUserOrAdmin(parsedAdmin);
+            setIsAdmin(true);
         }
     }, []);
 
@@ -54,12 +63,12 @@ const BookList = () => {
 
 
     const addToReadLater = (isbn) => {
-        fetch(`http://localhost:5000/readlater/${user.id_user}/${isbn}`, {
+        fetch(`http://localhost:5000/readlater/${userOrAdmin.id_user}/${isbn}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ id_user: user.id_user, isbn }) 
+            body: JSON.stringify({ id_user: userOrAdmin.id_user, isbn }) 
         })
         .then((response) => {
             if (!response.ok) {
@@ -69,7 +78,7 @@ const BookList = () => {
         })
         .then((data) => {
             setReadLaterList([...readLaterList, data]);
-            setReadLaterListID([...readLaterListID, { id_user: user.id_user, isbn }]);
+            setReadLaterListID([...readLaterListID, { id_user: userOrAdmin.id_user, isbn }]);
             console.log(data);
             toast.success(`Added to Read Later list`);
         })
@@ -79,7 +88,7 @@ const BookList = () => {
     return (
         <div>
             <ToastContainer />
-            <h1 className='text-center text-[23px] text-[black] font-[bold] mt-5'>BOOK CHOICES</h1>
+            <h1 className='text-center text-[23px] text-[black] font-[bold] mt-5'>WELCOME ADMINISTRATOR</h1>
             <p className='text-center text-base text-[black] mb-5'>This Lorem Ipsum was written manually Ohio sigma fanum tax 1550s</p>
             
             <div className="flex justify-center items-center gap-[15px]">
@@ -132,23 +141,35 @@ const BookList = () => {
                 {backendData.length > 0 ? (
                     backendData.map((book, index) => (
                         <div key={index} className='book-item'>
-                            <Link to={`/book/${book.isbn}`} className='book-link'>
-                                <img src={book.cover} alt={book.judul} className='book-cover' />
-                                <div className='mt-2.5 grow flex flex-col items-center mt-auto p-2.5;'>
-                                    <h2 className='book-title'>{book.judul}</h2>
-                                    <p className='book-description'>{book.deskripsi}</p>
+                            { !isAdmin ? (
+                            <div>
+                                    <Link to={`/book/${book.isbn}`} className='book-link'>
+                                        <img src={book.cover} alt={book.judul} className='book-cover' />
+                                        <div className='mt-2.5 grow flex flex-col items-center mt-auto p-2.5;'>
+                                            <h2 className='book-title'>{book.judul}</h2>
+                                            <p className='book-description'>{book.deskripsi}</p>
+                                        </div>
+                                    </Link>
+                                    <button 
+                                        className='book-read-later' 
+                                        disabled={
+                                            readLaterListID.some(item => item.isbn === book.isbn && item.id_user === userOrAdmin.id_user)
+                                        } 
+                                        
+                                        onClick={() => (userOrAdmin ? addToReadLater(book.isbn) : toast.error('Please login to add to Read Later list'))}
+                                    >
+                                        🕮
+                                    </button>
                                 </div>
-                            </Link>
-                            <button 
-                                className='book-read-later' 
-                                disabled={
-                                    readLaterListID.some(item => item.isbn === book.isbn && item.id_user === user.id_user)
-                                } 
-                                
-                                onClick={() => (user ? addToReadLater(book.isbn) : toast.error('Please login to add to Read Later list'))}
-                            >
-                                🕮
-                            </button>
+                            ) : (
+                                <div>
+                                    <img src={book.cover} alt={book.judul} className='book-cover' />
+                                    <div className='mt-2.5 grow flex flex-col items-center mt-auto p-2.5;'>
+                                            <h2 className='book-title'>{book.judul}</h2>
+                                            <p className='book-description'>{book.deskripsi}</p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     ))
                 ) : (
