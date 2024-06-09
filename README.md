@@ -123,3 +123,6 @@ npm run dev
 - Meet Kedua
 ![Foto2](https://cdn.discordapp.com/attachments/676267084732170251/1249362456502075454/image.png?ex=666706f5&is=6665b575&hm=a8de8e1dd5d86ac33270547f04347a9a560cdf855a56ee32fd501e51da4985f4&)
 
+## Special Thanks to
+- Bang Altap aslab berkelas
+- Bang GPT dewa database
