@@ -18,6 +18,7 @@ LibCatalog merupakan sebuah Webiste user friendly dengan implementasi sistem man
 ![ERD](https://cdn.discordapp.com/attachments/676267084732170251/1249327579220148224/LibCatalog-ERD.png?ex=6666e67a&is=666594fa&hm=d028ab14aa27ce3adbb042ea716a606d2938f0f01915b475b948cb1482efc293&)
 
 ### UML
+![Flowchart](https://cdn.discordapp.com/attachments/872335363849486336/1249378058943594536/SBD_Aduhai_1.png?ex=6667157d&is=6665c3fd&hm=43d53de88cb3925ddc387f52e77d9983eecbe4664bbf41e2663d056128ace6bf&)
 
 ### FLowchart
 ![Flowchart](https://cdn.discordapp.com/attachments/676267084732170251/1249361036440633407/Diagram_Tanpa_Judul.drawio_31.png?ex=666705a3&is=6665b423&hm=b51485a43aa979298cbc5505e9f1a6e15655f7b6e4500ab95f4090ab646badca&)
