@@ -12,15 +12,14 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors()); 
-
 
 app.use(session({
     secret: 'secretkey',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: false, httpOnly: true }
 }));
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json()); 
@@ -29,9 +28,12 @@ app.use(bodyParser.json());
 app.get('/allbooks', userControllers.getAllBooks);
 app.get('/genre/:genre', userControllers.getGenre);
 app.get('/topfive', userControllers.topFiveBooks);
-app.get('/book/:isbn', userControllers.bookDetails); //ininini
+app.get('/book/:isbn', userControllers.bookDetails);
+app.post('/book/', adminControllers.addBook);
+app.put('/book/:isbn', adminControllers.updateBook);
+app.delete('/book/:isbn', adminControllers.updateBook);
 
-// Endpoint User
+// Endpoint Account
 app.get('/user/:id_user', userControllers.getUserProfile);
 app.post('/borrow', userControllers.borrowBook);
 app.put('/return/:id_peminjaman', userControllers.returnBook);
@@ -46,9 +48,9 @@ app.delete('/readlater/:id_read_later', userControllers.deleteReadLater);
 
 app.post('/rating', userControllers.addRating);
 app.post('/register/user', userControllers.registerUser);
+app.post('/register/admin', adminControllers.registerAdmin);
 app.post('/login/user', userControllers.loginUser);
-// app.post('/login/admin', adminControllers.loginAdmin);
-
+app.post('/login/admin', adminControllers.loginAdmin);
 
 // Logging
 app.listen(port, () => {
