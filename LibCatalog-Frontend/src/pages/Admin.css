@@ -1,0 +1,22 @@
+body {
+  background: radial-gradient(circle, lightblue, #3066be);
+  margin: 0;
+}
+
+.book-review-container {
+  display: flex;
+  justify-content: center;
+  margin: 40px auto 20px auto; /* Adjust margin to create spacing */
+}
+
+.book-detail-frame {
+  display: flex;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  height: 750px;
+  width: 1250px;
+  margin-bottom: 0;
+}

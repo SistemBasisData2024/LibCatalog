@@ -1,5 +1,6 @@
 import './Register.css';
 import React, { useState } from 'react';
+import Navbar from '../components/Navbar';
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -38,7 +39,7 @@ const Register = () => {
             password: password.value,
             role: role,
         };
-        const url = role === 'admin' ? "http://localhost:5000/register/admin" : "http://localhost:5000/register/user";
+        const url = (role === 'admin' ? "http://localhost:5000/register/admin" : "http://localhost:5000/register/user");
 
         try {
             const response = await fetch(url, {
@@ -65,8 +66,10 @@ const Register = () => {
 
     return (
         <div>
+            <Navbar />
             <div className="register-form-container">
                 <form className="register-form" onSubmit={handleRegister}>
+                    {console.log(role)}
                     <h2 className="form-title">Sign Up</h2>
                     <div className="form-group">
                         <label>

@@ -22,7 +22,13 @@ async function registerAdmin(req, res) {
         const admin = await adminServices.registerAdmin(nama, username, password);
         res.status(201).json({ message: "Berhasil Melakukan Register", data: admin });
     } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
+        console.error("Error during registration:", error); // Enhanced error logging
+
+        if (error.message === "All fields are required" || error.message === "Password must be at least 8 characters long" || error.message === "Username already exists") {
+            res.status(400).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: "Internal Server Error" });
+        }
     }
 }
 

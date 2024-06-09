@@ -25,7 +25,8 @@ async function registerUser(req, res) {
         const user = await userServices.registerUser(nama, username, password);
         res.status(201).json({ message: "Successfully Registered", data: user });
     } catch (error) {
-        res.status(500).json({ error: "Internal Server Error" });
+        console.error('Error during user registration:', error.message);
+        res.status(500).json({ message: "Username already exists" });
     }
 }
 

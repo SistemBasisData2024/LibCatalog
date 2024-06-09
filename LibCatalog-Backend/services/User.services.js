@@ -18,6 +18,17 @@ async function registerUser(nama, username, password) {
     if (password.length < 8) {
         throw new Error("Password must be at least 8 characters long");
     }
+
+    const checkQuery = `
+        SELECT * FROM "user"
+        WHERE username = $1
+    `;
+    const checkUser = await pool.query(checkQuery, [username]);
+    if (checkUser.rows.length > 0) {
+        throw new Error("Username already exists");
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
     const query = `
         INSERT INTO "user" (nama, username, password)
         VALUES ($1, $2, $3)
