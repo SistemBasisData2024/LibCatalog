@@ -87,6 +87,16 @@ async function getBorrowedBooksByISBNandUser(req, res) {
     }
 }
 
+async function getBorrowedBooksByUser(req, res) {
+    const { id_user } = req.params;
+    try {
+        const borrowedBooks = await borrowServices.getBorrowedBooksByUser(id_user);
+        res.status(200).json(borrowedBooks);
+    } catch (error) {
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+}
+
 async function addReview(req, res) {
     const { id_user, isbn, rating, ulasan } = req.body;
 
@@ -136,15 +146,11 @@ async function addReadLater(req, res) {
 }
 
 async function deleteReadLater(req, res) {
-    const { id_user, isbn } = req.body;
+    const { id_read_later } = req.params;
 
     try {
-        const readLater = await readLaterServices.deleteReadLater(id_user, isbn);
-        if (readLater) {
-            res.status(200).json({ message: "Telah dihapus dari read later", data: readLater });
-        } else {
-            res.status(404).json({ error: "Read later tidak ditemukan" });
-        }
+        await readLaterServices.deleteReadLater(id_read_later);
+        res.status(200).json({ message: "Read Later berhasil dihapus" });
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
     }
@@ -214,6 +220,7 @@ module.exports = {
     borrowBook,
     returnBook,
     getBorrowedBooksByISBNandUser,
+    getBorrowedBooksByUser,
     addReview,
     getReviews,
     addRating,

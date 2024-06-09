@@ -1,84 +1,119 @@
+import React, { useEffect, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './UserProfile.css';
-import React, { useState } from 'react';
-import { Link } from "react-router-dom";
+import Navbar from '../components/Navbar';
 
 const UserProfile = () => {
-    const [user, setUser] = useState({
-        fullName: "Orang",
-        username: "rang.orang",
-        profilePicture: "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg",
-        bookTransactions: [
-            { transactionId: 1, isbn: "1234567890", title: "The Catcher in the Rye", author: "J.D. Salinger", returnDate: "2024-06-01", status: "Sedang Dipinjam" },
-            { transactionId: 2, isbn: "0987654321", title: "1984", author: "George Orwell", returnDate: "2024-05-15", status: "Sudah Dikembalikan" },
-        ],
-        readLaterBooks: [
-            { isbn: "2233445566", title: "Brave New World", description: "A dystopian social science fiction novel and cautionary tale, written by the English author Aldous Huxley.", author: "Aldous Huxley" },
-            { isbn: "3344556677", title: "Moby Dick", description: "A novel by Herman Melville, in which Captain Ahab seeks vengeance against a white whale.", author: "Herman Melville" },
-        ],
-    });
-
-    /*const [user, setUser] = useState(null);
-    const [transactions, setTransactions] = useState([]);
+    const [userProfile, setUserProfile] = useState(null);
+    const [borrowedBooks, setBorrowedBooks] = useState([]);
     const [readLaterBooks, setReadLaterBooks] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchUserProfile = async () => {
             try {
-                const userResponse = await axios.get('http://localhost:5000/user');
-                setUser(userResponse.data);
-
-                const transactionsResponse = await axios.get('http://localhost:5000/borrowBook');
-                setTransactions(transactionsResponse.data);
-
-                const readLaterResponse = await axios.get('http://localhost:5000/readLater');
-                setReadLaterBooks(readLaterResponse.data);
+                let storedUser = localStorage.getItem('user');
+                if (storedUser) {
+                    const parsedUser = JSON.parse(storedUser);
+                    const userProfileResponse = await fetch(`http://localhost:5000/user/${parsedUser.id_user}`);
+                    const userProfileData = await userProfileResponse.json();
+                    setUserProfile(userProfileData);
+                }
             } catch (error) {
-                console.error("Error fetching data", error);
+                console.error('Error fetching user profile:', error);
+                toast.error('Failed to fetch user profile.');
             }
         };
 
-        fetchData();
+        const fetchBorrowedBooks = async () => {
+            try {
+                let storedUser = localStorage.getItem('user');
+                if (storedUser) {
+                    const parsedUser = JSON.parse(storedUser);
+                    const borrowedBooksResponse = await fetch(`http://localhost:5000/borrow/${parsedUser.id_user}`);
+                    const borrowedBooksData = await borrowedBooksResponse.json();
+                    
+                    // Fetch additional book information using ISBN
+                    const updatedBorrowedBooks = await Promise.all(borrowedBooksData.map(async (book) => {
+                        const bookInfoResponse = await fetch(`http://localhost:5000/book/${book.isbn}`);
+                        const bookInfoData = await bookInfoResponse.json();
+                        return { ...book, judul: bookInfoData.judul, deskripsi: bookInfoData.deskripsi };
+                    }));
+                    
+                    setBorrowedBooks(updatedBorrowedBooks);
+                }
+            } catch (error) {
+                console.error('Error fetching borrowed books:', error);
+                toast.error('Failed to fetch borrowed books.');
+            }
+        };
+
+        const fetchReadLaterBooks = async () => {
+            try {
+                let storedUser = localStorage.getItem('user');
+                if (storedUser) {
+                    const parsedUser = JSON.parse(storedUser);
+                    const readLaterResponse = await fetch(`http://localhost:5000/readlater/${parsedUser.id_user}`);
+                    const readLaterData = await readLaterResponse.json();
+                    
+                    // Fetch additional book information using ISBN
+                    const updatedReadLaterBooks = await Promise.all(readLaterData.map(async (book) => {
+                        const bookInfoResponse = await fetch(`http://localhost:5000/book/${book.isbn}`);
+                        const bookInfoData = await bookInfoResponse.json();
+                        return { ...book, judul: bookInfoData.judul, deskripsi: bookInfoData.deskripsi };
+                    }));
+                    
+                    setReadLaterBooks(updatedReadLaterBooks);
+                }
+            } catch (error) {
+                console.error('Error fetching read later books:', error);
+                toast.error('Failed to fetch read later books.');
+            }
+        };
+
+        fetchUserProfile();
+        fetchBorrowedBooks();
+        fetchReadLaterBooks();
     }, []);
+    
+    const handleRemoveReadLater = async (id_read_later) => {
+        try {
+            const response = await fetch(`http://localhost:5000/readlater/${id_read_later}`, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                setReadLaterBooks((prevBooks) => prevBooks.filter((buku) => buku.id_read_later !== id_read_later));
+                toast.success('Book removed from read later list.');
+            } else {
+                toast.error('Failed to remove book from read later list.');
+            }
+        } catch (error) {
+            console.error('Error removing book from read later list:', error);
+            toast.error('Failed to remove book from read later list.');
+        }
+    }
 
-    if (!user) {
-        return <div>Loading...</div>;
-    }*/
-
-    const handleReturnBook = (transactionId) => {
-        const updatedTransactions = user.bookTransactions.map(transaction =>
-            transaction.transactionId === transactionId
-                ? { ...transaction, status: "Sudah Dikembalikan" }
-                : transaction
-        );
-        setUser({ ...user, bookTransactions: updatedTransactions });
-    };
+    if (!userProfile) {
+        return <p>Loading user profile...</p>;
+    }
 
     return (
+        
         <div className="user-profile-container">
-            <h2>User Profile</h2>
             <div className="user-info">
-                <img src={user.profilePicture} alt="Profile" className="profile-picture" />
-                <p><strong>Full Name:</strong> {user.fullName}</p>
-                <p><strong>Username:</strong> {user.username}</p>
+                <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Avatar" />
+                <p><strong>Username:</strong> {userProfile.username}</p>
+                <p><strong>Name:</strong> {userProfile.nama}</p>
             </div>
             <div className="books-grid">
                 <div className="books-section">
-                    <h3>Book Transactions</h3>
+                    <h3>Borrowed Books</h3>
                     <div className="card-container">
-                        {user.bookTransactions.map((transaction, index) => (
+                        {borrowedBooks.map((buku, index) => (
                             <div key={index} className="card">
-                                <p><strong>Title:</strong> {transaction.title}</p>
-                                <p><strong>ISBN:</strong> {transaction.isbn}</p>
-                                <p><strong>Transaction ID:</strong> {transaction.transactionId}</p>
-                                <p><strong>Return Date:</strong> {transaction.returnDate}</p>
-                                <p className={`status ${transaction.status === 'Sedang Dipinjam' ? 'borrowed' : 'returned'}`}>
-                                    {transaction.status}
-                                </p>
-                                {transaction.status === 'Sedang Dipinjam' && (
-                                    <button className="return-button" onClick={() => handleReturnBook(transaction.transactionId)}>
-                                        Return
-                                    </button>
-                                )}
+                                <p><strong>Title:</strong> {buku.judul}</p>
+                                <p><strong>ISBN:</strong> {buku.isbn}</p>
+                                <p><strong>Return Date:</strong> {buku.deadline}</p>
                             </div>
                         ))}
                     </div>
@@ -86,18 +121,20 @@ const UserProfile = () => {
                 <div className="books-section">
                     <h3>Read Later</h3>
                     <div className="card-container">
-                        {user.readLaterBooks.map((book, index) => (
+                        {readLaterBooks.map((buku, index) => (
                             <div key={index} className="card">
-                                <p><strong>Title:</strong> {book.title}</p>
-                                <p><strong>ISBN:</strong> {book.isbn}</p>
-                                <p><strong>Description:</strong> {book.description}</p>
+                                <p><strong>Title:</strong> {buku.judul}</p>
+                                <p><strong>ISBN:</strong> {buku.isbn}</p>
+                                <p><strong>Description:</strong> {buku.deskripsi}</p>
+                                <button className="return-button" onClick={() => handleRemoveReadLater(buku.id_read_later)}>Remove</button>
                             </div>
                         ))}
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     );
 };
 
-export default UserProfile;
+export default UserProfile; 

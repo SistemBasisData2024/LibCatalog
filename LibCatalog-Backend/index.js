@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors()); 
 
-// DARI GPT INI 
+
 app.use(session({
     secret: 'secretkey',
     resave: false,
@@ -36,6 +36,7 @@ app.get('/user/:id_user', userControllers.getUserProfile);
 app.post('/borrow', userControllers.borrowBook);
 app.put('/return/:id_peminjaman', userControllers.returnBook);
 app.get('/borrow/:id_user/:isbn', userControllers.getBorrowedBooksByISBNandUser);
+app.get('/borrow/:id_user', userControllers.getBorrowedBooksByUser);
 app.post('/review', userControllers.addReview);
 app.get('/review/:isbn', userControllers.getReviews);
 

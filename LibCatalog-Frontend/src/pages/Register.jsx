@@ -1,7 +1,8 @@
 import './Register.css';
 import React, { useState } from 'react';
-import Navbar from '../components/Navbar';
 import { Link } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Register = () => {
     const [fullName, setFullName] = useState("");
@@ -33,14 +34,13 @@ const Register = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
+    
         const formData = {
             nama: fullName,
             username: username,
             password: password.value,
             role: role,
         };
-
         try {
             const response = await fetch('http://localhost:5000/register/user', {
                 method: 'POST',
@@ -49,89 +49,92 @@ const Register = () => {
                 },
                 body: JSON.stringify(formData),
             });
-
+    
             if (response.ok) {
-                alert("Account created!");
+                toast.success("Account created!");
                 console.log('Form Data: ', formData);
                 clearForm();
             } else {
                 const errorData = await response.json();
-                alert(`message: ${errorData.message}`);
+                if (errorData.error === "Username already exists") {
+                    toast.error("Username already exists");
+                } else {
+                    toast.error(`Error: Username already exists`);
+                }
             }
         } catch (error) {
             console.error('Error during registration:', error);
-            alert('An error occurred during registration.');
+            toast.error('An error occurred during registration.');
         }
     };
+    
 
     return (
-        <div>
-        <Navbar />
-            <div className="register-form-container">
-                <form className="register-form" onSubmit={handleSubmit}>
-                    <h2 className="form-title">Sign Up</h2>
-                    <div className="form-group">
-                        <label>
-                            Full Name <sup>*</sup>
-                        </label>
-                        <input
-                            type="text"
-                            value={fullName}
-                            onChange={(e) => setFullName(e.target.value)}
-                            placeholder="Full name"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            Username <sup>*</sup>
-                        </label>
-                        <input
-                            type="text"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            placeholder="Username"
-                        />
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            Password <sup>*</sup>
-                        </label>
-                        <input
-                            value={password.value}
-                            type="password"
-                            onChange={(e) => setPassword({ ...password, value: e.target.value })}
-                            onBlur={() => setPassword({ ...password, isTouched: true })}
-                            placeholder="Password"
-                        />
-                        {password.isTouched && password.value.length < 8 && (
-                            <PasswordErrorMessage />
-                        )}
-                    </div>
-                    <div className="form-group">
-                        <label>
-                            Role <sup>*</sup>
-                        </label>
-                        <select
-                            value={role}
-                            onChange={(e) => setRole(e.target.value)}
-                            required
-                        >
-                            <option value="" disabled>Select role</option>
-                            <option value="user">User</option>
-                            <option value="admin">Admin</option>
-                        </select>
-                    </div>
-                    <button type="submit" className="register-button" disabled={!getIsFormValid()}>
-                        CREATE ACCOUNT
-                    </button>
-                    <div className="form-footer">
-                        <label>
-                            Already have an account? 
-                        </label>
-                        <Link to="/login" className="text-blue-600"> Login</Link>
-                    </div>
-                </form>
-            </div>
+        <div className="register-form-container">
+            <form className="register-form" onSubmit={handleSubmit}>
+                <h2 className="form-title">Sign Up</h2>
+                <div className="form-group">
+                    <label>
+                        Full Name <sup>*</sup>
+                    </label>
+                    <input
+                        type="text"
+                        value={fullName}
+                        onChange={(e) => setFullName(e.target.value)}
+                        placeholder="Full name"
+                    />
+                </div>
+                <div className="form-group">
+                    <label>
+                        Username <sup>*</sup>
+                    </label>
+                    <input
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Username"
+                    />
+                </div>
+                <div className="form-group">
+                    <label>
+                        Password <sup>*</sup>
+                    </label>
+                    <input
+                        value={password.value}
+                        type="password"
+                        onChange={(e) => setPassword({ ...password, value: e.target.value })}
+                        onBlur={() => setPassword({ ...password, isTouched: true })}
+                        placeholder="Password"
+                    />
+                    {password.isTouched && password.value.length < 8 && (
+                        <PasswordErrorMessage />
+                    )}
+                </div>
+                <div className="form-group">
+                    <label>
+                        Role <sup>*</sup>
+                    </label>
+                    <select
+                        value={role}
+                        onChange={(e) => setRole(e.target.value)}
+                        required
+                    >
+                        <option value="" disabled>Select role</option>
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <button type="submit" className="register-button" disabled={!getIsFormValid()}>
+                    CREATE ACCOUNT
+                </button>
+                <div className="form-footer">
+                    <label>
+                        Already have an account? 
+                    </label>
+                    <Link to="/" className="text-blue-600"> Login</Link>
+                </div>
+            </form>
+            <ToastContainer />
         </div>
     );
 };
