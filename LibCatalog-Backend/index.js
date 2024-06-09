@@ -35,20 +35,24 @@ app.delete('/book/:isbn', adminControllers.deleteBook);
 
 // Endpoint Account
 app.get('/user/:id_user', userControllers.getUserProfile);
+app.get('/admin/:id_admin', adminControllers.getAdminProfile);
+
 app.post('/borrow', userControllers.borrowBook);
-app.put('/return/:id_peminjaman', userControllers.returnBook);
 app.get('/borrow/:id_user/:isbn', userControllers.getBorrowedBooksByISBNandUser);
 app.get('/borrow/:id_user', userControllers.getBorrowedBooksByUser);
+app.put('/return/:id_peminjaman', userControllers.returnBook);
+
 app.post('/review', userControllers.addReview);
 app.get('/review/:isbn', userControllers.getReviews);
+app.post('/rating', userControllers.addRating);
 
 app.post('/readlater/:id_user/:isbn', userControllers.addReadLater);
 app.get('/readlater/:id_user', userControllers.getReadLater);
 app.delete('/readlater/:id_read_later', userControllers.deleteReadLater);
 
-app.post('/rating', userControllers.addRating);
 app.post('/register/user', userControllers.registerUser);
 app.post('/register/admin', adminControllers.registerAdmin);
+
 app.post('/login/user', userControllers.loginUser);
 app.post('/login/admin', adminControllers.loginAdmin);
 

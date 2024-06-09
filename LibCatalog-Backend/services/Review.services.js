@@ -1,6 +1,5 @@
 const pool = require ('../db/db.js');
 
-
 async function addReview (id_user, isbn, rating, ulasan) {
     const query = `
         INSERT INTO review (id_user, isbn, rating, ulasan)
@@ -47,7 +46,6 @@ async function addRating (id_user, isbn, rating) {
         return result.rows[0];
     }
 }
-
 
 module.exports = {
     addReview,

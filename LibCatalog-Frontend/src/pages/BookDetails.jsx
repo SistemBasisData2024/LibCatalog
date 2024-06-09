@@ -11,18 +11,20 @@ const BookDetail = () => {
   const [isBorrowed, setIsBorrowed] = useState(false);
   const [borrowId, setBorrowId] = useState(null);
   const [user, setUser] = useState(null);
+  const [reviews, setReviews] = useState([]);
+  const [newReview, setNewReview] = useState({ rating: '', ulasan: '' });
 
   useEffect(() => {
-    let storedUser = localStorage.getItem("user")
+    let storedUser = localStorage.getItem("user");
     if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        setUser(parsedUser);
+      const parsedUser = JSON.parse(storedUser);
+      setUser(parsedUser);
 
-        // cari buku yang sedang di
-        fetch(`http://localhost:5000/borrow/${parsedUser.id_user}/${isbn}`)
+      // Check if the book is borrowed by the user
+      fetch(`http://localhost:5000/borrow/${parsedUser.id_user}/${isbn}`)
         .then((response) => response.json())
         .then((data) => {
-          if(data.message == null){
+          if (data.message == null) {
             setIsBorrowed(true);
             setBorrowId(data.id_peminjaman);
           } else {
@@ -32,6 +34,7 @@ const BookDetail = () => {
         .catch((err) => console.log(err));
     }
     initializeBook();
+    fetchReviews();
   }, []);
 
   const initializeBook = () => {
@@ -39,6 +42,15 @@ const BookDetail = () => {
       .then((response) => response.json())
       .then((data) => {
         setBook(data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const fetchReviews = () => {
+    fetch(`http://localhost:5000/review/${isbn}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setReviews(data);
       })
       .catch((err) => console.log(err));
   };
@@ -54,7 +66,7 @@ const BookDetail = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id_user : user.id_user, isbn }),
+      body: JSON.stringify({ id_user: user.id_user, isbn }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -63,13 +75,12 @@ const BookDetail = () => {
         return response.json();
       })
       .then((data) => {
-        console.log("Response from server:", data);
         if (data.message === "Berhasil Meminjam Buku") {
           setIsBorrowed(true);
           setBorrowId(data.data);
           initializeBook();
           toast.success('Buku berhasil dipinjam!');
-        } 
+        }
       })
       .catch((err) => {
         console.error('Error:', err);
@@ -79,7 +90,6 @@ const BookDetail = () => {
 
   const handleReturn = () => {
     if (borrowId == null) {
-      console.log(borrowId);
       toast.error('No borrowed book found.');
       return;
     }
@@ -98,14 +108,9 @@ const BookDetail = () => {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         if (data.message === "Berhasil Mengembalikan Buku") {
           setIsBorrowed(false);
           toast.success('Buku berhasil dikembalikan!');
-          // setBook((prevBook) => ({
-          //   ...prevBook,
-          //   status: 'sudah dikembalikan',
-          // }));
           initializeBook();
         } else {
           toast.error('Gagal mengembalikan buku!');
@@ -114,6 +119,47 @@ const BookDetail = () => {
       .catch((err) => {
         console.error('Error:', err);
         toast.error('Gagal mengembalikan buku!');
+      });
+  };
+
+  const handleReviewChange = (e) => {
+    const { name, value } = e.target;
+    setNewReview((prevReview) => ({
+      ...prevReview,
+      [name]: value,
+    }));
+  };
+
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    if (!user) {
+      toast.error('Please log in to submit a review.');
+      return;
+    }
+
+    fetch(`http://localhost:5000/review`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id_user: user.id_user, isbn, ...newReview }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data) {
+          fetchReviews();
+          toast.success('Review added successfully!');
+          setNewReview({ rating: '', ulasan: '' });
+        }
+      })
+      .catch((err) => {
+        console.error('Error:', err);
+        toast.error('Failed to add review.');
       });
   };
 
@@ -135,23 +181,53 @@ const BookDetail = () => {
             <p><strong>Penerbit:</strong> {book.penerbit}</p>
             <p><strong>Deskripsi:</strong> {book.deskripsi}</p>
             <p><strong>Jumlah:</strong> {book.jumlah}</p>
-            
-            {!isBorrowed  ? (
-                <button onClick={handleBorrow}>Borrow Book</button>
-              ) : (
-                <button onClick={handleReturn}>Return Book</button>
-              )
-            }
 
+            {!isBorrowed ? (
+              <button onClick={handleBorrow}>Borrow Book</button>
+            ) : (
+              <button onClick={handleReturn}>Return Book</button>
+            )}
           </div>
         </div>
       </div>
 
       <div className="book-review-container">
-        <div className="book-detail-frame">
+        <div className="reviews-section">
           <h1>Review</h1>
-          <p>{book.review}</p>
+          <div className="reviews-list">
+            {reviews.map((review, index) => (
+              <div key={index} className="review-item">
+                <p><strong>Rating:</strong> {review.rating}</p>
+                <p><strong>Ulasan:</strong> {review.ulasan}</p>
+              </div>
+            ))}
+          </div>
         </div>
+        {user && (
+          <div className="add-review">
+            <h2>Add Your Review</h2>
+            <form onSubmit={handleReviewSubmit}>
+              <input
+                type="number"
+                name="rating"
+                max="5"
+                min="1"
+                value={newReview.rating}
+                onChange={handleReviewChange}
+                placeholder="Rating (1-5)"
+                required
+              />
+              <textarea
+                name="ulasan"
+                value={newReview.ulasan}
+                onChange={handleReviewChange}
+                placeholder="Write your review here..."
+                required
+              />
+              <button type="submit">Submit Review</button>
+            </form>
+          </div>
+        )}
       </div>
     </div>
   );
