@@ -3,9 +3,9 @@
 LibCatalog merupakan sebuah Webiste user friendly dengan implementasi sistem management Perpustakaan. Website ini dapat menampilkan daftar buku beserta cover buku dan detail dari bukunya. Website ini juga dapat melakukan peminjaman dan pengembalian buku, serta dapat memberikan rating buku yang telah dibaca. Jumlah buku yang dipinjam dan dikembalikan akan di-update secara berkala. Website dapat melakukan filterisasi buku berdasarkan parameter
 
 ## Anggota :
-- Monica Vierin Pasman (2206029405)
-- Christopher Sutandar (2206810414)
-- Irfan Yusuf Khaerullah (2206813290)
+- [Monica Vierin Pasman](https://github.com/monicavierin) (2206029405)
+- [Christopher Sutandar](https://github.com/christopherSuts) (2206810414)
+- [Irfan Yusuf Khaerullah](https://github.com/irfanyusuf13) (2206813290)
 
 
 ## 🖥️ Tech Stack : 
