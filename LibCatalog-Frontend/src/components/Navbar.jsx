@@ -44,7 +44,7 @@ const Navbar = () => {
     return (
         <nav className="bg-white border-gray-200 dark:bg-blue-950 py-4">
             <div className="container mx-auto flex justify-between items-center">
-                {isAdmin ? (
+                {!isAdmin ? (
                 <Link to="/">
                     <div className="flex items-center space-x-4">
                         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHDkd2V9dHdLORn-D1AMr73gMiH2Mmqan8LjxZ2sILBg&s" alt="Library Logo" className="ml-8 w-12 h-12 rounded-full" />

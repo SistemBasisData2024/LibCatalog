@@ -98,41 +98,44 @@ const UserProfile = () => {
     }
 
     return (
-        
-        <div className="user-profile-container">
-            <div className="user-info">
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Avatar" />
-                <p><strong>Username:</strong> {userProfile.username}</p>
-                <p><strong>Name:</strong> {userProfile.nama}</p>
-            </div>
-            <div className="books-grid">
-                <div className="books-section">
-                    <h3>Borrowed Books</h3>
-                    <div className="card-container">
-                        {borrowedBooks.map((buku, index) => (
-                            <div key={index} className="card">
-                                <p><strong>Title:</strong> {buku.judul}</p>
-                                <p><strong>ISBN:</strong> {buku.isbn}</p>
-                                <p><strong>Return Date:</strong> {buku.deadline}</p>
-                            </div>
-                        ))}
+        <div>
+            <Navbar />
+            <div className="user-profile-container">
+                
+                <div className="user-info">
+                    <img src="https://static.vecteezy.com/system/resources/thumbnails/002/318/271/small/user-profile-icon-free-vector.jpg" alt="User Avatar" />
+                    <p><strong>Username:</strong> {userProfile.username}</p>
+                    <p><strong>Name:</strong> {userProfile.nama}</p>
+                </div>
+                <div className="books-grid">
+                    <div className="books-section">
+                        <h3>Borrowed Books</h3>
+                        <div className="card-container">
+                            {borrowedBooks.map((buku, index) => (
+                                <div key={index} className="card">
+                                    <p><strong>Title:</strong> {buku.judul}</p>
+                                    <p><strong>ISBN:</strong> {buku.isbn}</p>
+                                    <p><strong>Return Date:</strong> {buku.deadline}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="books-section">
+                        <h3>Read Later</h3>
+                        <div className="card-container">
+                            {readLaterBooks.map((buku, index) => (
+                                <div key={index} className="card">
+                                    <p><strong>Title:</strong> {buku.judul}</p>
+                                    <p><strong>ISBN:</strong> {buku.isbn}</p>
+                                    <p><strong>Description:</strong> {buku.deskripsi}</p>
+                                    <button className="return-button" onClick={() => handleRemoveReadLater(buku.id_read_later)}>Remove</button>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
-                <div className="books-section">
-                    <h3>Read Later</h3>
-                    <div className="card-container">
-                        {readLaterBooks.map((buku, index) => (
-                            <div key={index} className="card">
-                                <p><strong>Title:</strong> {buku.judul}</p>
-                                <p><strong>ISBN:</strong> {buku.isbn}</p>
-                                <p><strong>Description:</strong> {buku.deskripsi}</p>
-                                <button className="return-button" onClick={() => handleRemoveReadLater(buku.id_read_later)}>Remove</button>
-                            </div>
-                        ))}
-                    </div>
-                </div>
+                <ToastContainer />
             </div>
-            <ToastContainer />
         </div>
     );
 };

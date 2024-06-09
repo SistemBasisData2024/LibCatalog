@@ -139,9 +139,9 @@ p.allBooks {
 .book-read-later {
     background-color: #3066be;
     color: #fff;
-    border: none;
-    padding: 6px; /* Mengurangi padding */
-    font-size: 18px; /* Mengurangi ukuran font */
+    border-radius: 0px;
+    padding: 6px; 
+    font-size: 18px; 
     cursor: pointer;
     transition: background-color 0.3s ease;
     align-self: flex-end;

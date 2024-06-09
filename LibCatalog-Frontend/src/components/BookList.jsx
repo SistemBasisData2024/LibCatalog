@@ -63,9 +63,9 @@ const BookList = () => {
 
 
     const addToReadLater = (isbn) => {
-        fetch(`http://localhost:5000/readlater/${userOrAdmin.id_user}/${isbn}`, {
+        fetch(`http://localhost:5000/readlater`, {
             method: "POST",
-            headers: {
+            headers : {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({ id_user: userOrAdmin.id_user, isbn }) 
@@ -141,34 +141,23 @@ const BookList = () => {
                 {backendData.length > 0 ? (
                     backendData.map((book, index) => (
                         <div key={index} className='book-item'>
-                            { !isAdmin  ? (
                             <div>
-                                    <Link to={`/book/${book.isbn}`} className='book-link'>
-                                        <img src={book.cover} alt={book.judul} className='book-cover' />
-                                        <div className='mt-2.5 grow flex flex-col items-center mt-auto p-2.5;'>
-                                            <h2 className='book-title'>{book.judul}</h2>
-                                            <p className='book-description'>{book.deskripsi}</p>
-                                        </div>
-                                    </Link>
-                                    <button 
-                                        className='book-read-later' 
-                                        disabled={
-                                            readLaterListID.some(item => item.isbn === book.isbn && item.id_user === userOrAdmin.id_user)
-                                        } 
-                                        
-                                        onClick={() => (userOrAdmin ? addToReadLater(book.isbn) : toast.error('Please login to add to Read Later list'))}
-                                    >
-                                        🕮
-                                    </button>
+                                <Link to={`/book/${book.isbn}`} className='book-link'>
+                                <img src={book.cover} alt={book.judul} className='book-cover' />
+                                <div className='book-info'>
+                                    <h2 className='book-title'>{book.judul}</h2>
+                                    <p className='book-description'>{book.deskripsi}</p>
                                 </div>
-                            ) : (
-                                <div>
-                                    <img src={book.cover} alt={book.judul} className='book-cover' />
-                                    <div className='mt-2.5 grow flex flex-col items-center mt-auto p-2.5;'>
-                                            <h2 className='book-title'>{book.judul}</h2>
-                                            <p className='book-description'>{book.deskripsi}</p>
-                                    </div>
-                                </div>
+                                </Link>
+                            </div>
+                            {!isAdmin && (
+                                <button 
+                                    className='book-read-later' 
+                                    disabled={readLaterListID.some(item => item.isbn === book.isbn && item.id_user === userOrAdmin.id_user)} 
+                                    onClick={() => (userOrAdmin ? addToReadLater(book.isbn) : toast.error('Please login to add to Read Later list'))}
+                                >
+                                    🕮
+                                </button>
                             )}
                         </div>
                     ))
