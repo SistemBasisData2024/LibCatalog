@@ -12,14 +12,14 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors()); 
 
 app.use(session({
     secret: 'secretkey',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }
+    cookie: { secure: false, httpOnly: true }
 }));
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json()); 
@@ -28,7 +28,10 @@ app.use(bodyParser.json());
 app.get('/allbooks', userControllers.getAllBooks);
 app.get('/genre/:genre', userControllers.getGenre);
 app.get('/topfive', userControllers.topFiveBooks);
-app.get('/book/:isbn', userControllers.bookDetails); //ininini
+app.get('/book/:isbn', userControllers.bookDetails);
+app.post('/book/', adminControllers.addBook);
+app.put('/book/:isbn', adminControllers.updateBook);
+app.delete('/book/:isbn', adminControllers.updateBook);
 
 // Endpoint Account
 app.get('/user/:id_user', userControllers.getUserProfile);

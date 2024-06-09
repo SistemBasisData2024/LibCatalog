@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 
 async function getAdminProfile(id_admin) {
     const query = `
-        SELECT * FROM "admin"
+        SELECT * FROM admin
         WHERE id_admin = $1
     `;
     const result = await pool.query(query, [id_admin]);
@@ -20,7 +20,7 @@ async function registerAdmin(nama, username, password) {
     }
 
     const checkQuery = `
-        SELECT * FROM "admin"
+        SELECT * FROM admin
         WHERE username = $1
     `;
     const checkAdmin = await pool.query(checkQuery, [username]);
@@ -30,7 +30,7 @@ async function registerAdmin(nama, username, password) {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     const query = `
-        INSERT INTO "admin" (nama, username, password)
+        INSERT INTO admin (nama, username, password)
         VALUES ($1, $2, $3)
         RETURNING id_admin
     `;
@@ -40,7 +40,7 @@ async function registerAdmin(nama, username, password) {
 
 async function loginAdmin(username, password) {
     const query = `
-        SELECT * FROM "admin"
+        SELECT * FROM admin
         WHERE username = $1
     `;
     const result = await pool.query(query, [username]);
@@ -64,5 +64,6 @@ async function logoutAdmin(req, res) {
 module.exports = {
     getAdminProfile,
     registerAdmin,
-    loginAdmin
+    loginAdmin,
+    logoutAdmin
 };
