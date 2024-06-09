@@ -19,7 +19,23 @@ async function checkBorrowedBooks(id_user ,isbn) {
     return result.rows.length > 0;
 }
 
+async function getBookQuantity(isbn) {
+    const query = `
+        SELECT jumlah FROM buku
+        WHERE isbn = $1
+    `;
+    const result = await pool.query(query, [isbn]);
+    if (result.rows.length === 0) {
+        throw new Error('Buku tidak ditemukan');
+    }
+    return result.rows[0].jumlah;
+}
+
 async function borrowBook(id_user, isbn) {
+    const quantity = await getBookQuantity(isbn);
+    if (quantity <= 0) {
+        throw new Error('Buku tidak tersedia');
+    }
     const deadline = new Date();
     deadline.setDate(deadline.getDate() + 7); 
     const query = `
