@@ -25,6 +25,7 @@ async function registerUser(req, res) {
         const user = await userServices.registerUser(nama, username, password);
         res.status(201).json({ message: "Successfully Registered", data: user });
     } catch (error) {
+        console.error('Error during user registration:', error.message);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }

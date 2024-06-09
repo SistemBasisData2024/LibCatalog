@@ -133,7 +133,7 @@ const Register = () => {
                         <label>
                             Already have an account? 
                         </label>
-                        <Link to="/" className="text-blue-600"> Login</Link>
+                        <Link to="/login" className="text-blue-600"> Login</Link>
                     </div>
                 </form>
             </div>

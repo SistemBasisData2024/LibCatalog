@@ -31,7 +31,7 @@ app.get('/topfive', userControllers.topFiveBooks);
 app.get('/book/:isbn', userControllers.bookDetails);
 app.post('/book/', adminControllers.addBook);
 app.put('/book/:isbn', adminControllers.updateBook);
-app.delete('/book/:isbn', adminControllers.updateBook);
+app.delete('/book/:isbn', adminControllers.deleteBook);
 
 // Endpoint Account
 app.get('/user/:id_user', userControllers.getUserProfile);
