@@ -1,5 +1,6 @@
 import './Login.css';
 import React, { useState } from 'react';
+import Navbar from '../components/Navbar';
 import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -64,7 +65,7 @@ const Login = () => {
                 if (loggedInUser) {
                     clearForm();
                     alert("Login berhasil");
-                    navigate("/home");
+                    navigate("/");
                     console.log("Login berhasil");
                 }
             } else {

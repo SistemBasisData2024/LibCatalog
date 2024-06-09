@@ -1,7 +1,6 @@
 import './Register.css';
 import React, { useState } from 'react';
 import { Link } from "react-router-dom";
-import Navbar from '../components/Navbar';
 
 const Register = () => {
     const [fullName, setFullName] = useState("");
@@ -66,7 +65,6 @@ const Register = () => {
 
     return (
         <div>
-            <Navbar />
             <div className="register-form-container">
                 <form className="register-form" onSubmit={handleRegister}>
                     <h2 className="form-title">Sign Up</h2>
