@@ -44,7 +44,7 @@ app.get('/readlater/:id_user', userControllers.getReadLater);
 app.delete('/readlater/:id_read_later', userControllers.deleteReadLater);
 
 app.post('/rating', userControllers.addRating);
-app.post('/register', userControllers.registerUser);
+app.post('/register/user', userControllers.registerUser);
 app.post('/login/user', userControllers.loginUser);
 // app.post('/login/admin', adminControllers.loginAdmin);
 
