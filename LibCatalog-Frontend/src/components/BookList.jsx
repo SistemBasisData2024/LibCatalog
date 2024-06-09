@@ -142,13 +142,23 @@ const BookList = () => {
                     backendData.map((book, index) => (
                         <div key={index} className='book-item'>
                             <div>
-                                <Link to={`/book/${book.isbn}`} className='book-link'>
-                                <img src={book.cover} alt={book.judul} className='book-cover' />
-                                <div className='book-info'>
-                                    <h2 className='book-title'>{book.judul}</h2>
-                                    <p className='book-description'>{book.deskripsi}</p>
-                                </div>
-                                </Link>
+                                {!isAdmin ? (
+                                    <Link to={`/book/${book.isbn}`} className='book-link'>
+                                    <img src={book.cover} alt={book.judul} className='book-cover' />
+                                    <div className='book-info'>
+                                        <h2 className='book-title'>{book.judul}</h2>
+                                        <p className='book-description'>{book.deskripsi}</p>
+                                    </div>
+                                    </Link>
+                                ) : (
+                                    <div>
+                                        <img src={book.cover} alt={book.judul} className='book-cover' />
+                                        <div className='book-info'>
+                                            <h2 className='book-title'>{book.judul}</h2>
+                                            <p className='book-description'>{book.deskripsi}</p>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
                             {!isAdmin && (
                                 <button 
