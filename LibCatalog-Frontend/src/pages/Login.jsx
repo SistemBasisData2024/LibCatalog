@@ -12,15 +12,6 @@ const Login = () => {
     });
     const [role, setRole] = useState("");
 
-    const getIsFormValid = () => {
-        return (
-            fullName &&
-            username &&
-            password.value.length >= 8 &&
-            role !== ""
-        );
-    };
-
     const clearForm = () => {
         setFullName("");
         setUsername("");
@@ -127,7 +118,6 @@ const Login = () => {
                         <option value="admin">Admin</option>
                     </select>
                 </div>
-                
                 <div className="form-group">
                     {role === '' ? (
                         <button disabled type="submit" className="register-button">Login</button>
@@ -140,7 +130,6 @@ const Login = () => {
                         )
                     )}
                 </div>
-
                 <div className="form-footer">
                     <label>
                         Don't have an account? 

@@ -10,7 +10,7 @@ async function getUserProfile(req, res) {
     try {
         const user = await userServices.getUserProfile(id_user);
         if (!user) {
-            res.status(404).json({ error: "User tidak ditemukan" });
+            res.status(404).json({ error: "Akun user tidak ditemukan" });
         } else {
             res.status(200).json(user);
         }
@@ -25,13 +25,13 @@ async function registerUser(req, res) {
         const user = await userServices.registerUser(nama, username, password);
         res.status(201).json({ message: "Berhasil Melakukan Register", data: user });
     } catch (error) {
+        console.error('Error during user registration:', error.message);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
 
 async function loginUser(req, res) {
     const { username, password } = req.body;
-
     try {
         const user = await userServices.loginUser(username, password);
         req.session.user = user.id_user; // Set session user setelah login berhasil

@@ -14,7 +14,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors()); 
 
-// DARI GPT INI 
 app.use(session({
     secret: 'secretkey',
     resave: false,
@@ -31,7 +30,7 @@ app.get('/home/genre/:genre', userControllers.getGenre);
 app.get('/home/top', userControllers.topFiveBooks);
 app.get('/book/:isbn', userControllers.bookDetails); //ininini
 
-// Endpoint User
+// Endpoint Account
 app.get('/user/:id_user', userControllers.getUserProfile);
 app.post('/borrow', userControllers.borrowBook);
 app.put('/return/:id_peminjaman', userControllers.returnBook);
@@ -44,10 +43,10 @@ app.get('/readlater/:id_user', userControllers.getReadLater);
 app.delete('/readlater/:id_read_later', userControllers.deleteReadLater);
 
 app.post('/rating', userControllers.addRating);
-app.post('/register', userControllers.registerUser);
+app.post('/register/user', userControllers.registerUser);
+app.post('/register/admin', adminControllers.registerAdmin);
 app.post('/login/user', userControllers.loginUser);
-// app.post('/login/admin', adminControllers.loginAdmin);
-
+app.post('/login/admin', adminControllers.loginAdmin);
 
 // Logging
 app.listen(port, () => {
