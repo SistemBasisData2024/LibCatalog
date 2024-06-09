@@ -141,7 +141,7 @@ const BookList = () => {
                 {backendData.length > 0 ? (
                     backendData.map((book, index) => (
                         <div key={index} className='book-item'>
-                            { !isAdmin ? (
+                            { !isAdmin  ? (
                             <div>
                                     <Link to={`/book/${book.isbn}`} className='book-link'>
                                         <img src={book.cover} alt={book.judul} className='book-cover' />

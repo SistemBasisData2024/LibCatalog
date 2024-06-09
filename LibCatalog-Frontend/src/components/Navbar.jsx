@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { Link, useLocation  } from "react-router-dom";
+import { Link, useLocation, useNavigate  } from "react-router-dom";
 
 const Navbar = () => {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -8,7 +8,8 @@ const Navbar = () => {
     const [userOrAdmin, setUserOrAdmin] = useState(null);
     const [isAdmin, setIsAdmin] = useState(false);
     // const [searchQuery, setSearchQuery] = useState('');
-
+    const navigate = useNavigate();
+    
     useEffect(() => {
         let storedUser = localStorage.getItem("user")
         if (storedUser) {
@@ -35,7 +36,8 @@ const Navbar = () => {
     const handleLogout = () => {
         localStorage.removeItem("user");
         localStorage.removeItem("admin");
-        setUserOrAdmin();
+        setUserOrAdmin(null);
+        navigate("/");
         toast.success("Successfully logged out.");
     };
 
@@ -76,9 +78,13 @@ const Navbar = () => {
                                             <span className="block text-sm text-gray-500 truncate">{userOrAdmin.username}</span>
                                         </div>
                                         <ul>
-                                            <li>
-                                            <Link to="/userProfile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
+                                            { !isAdmin ? (
+                                                <li>
+                                                <Link to="/userProfile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
                                             </li>
+                                            ) : (
+                                                null
+                                            )}
                                             <li>
                                                 <a onClick={handleLogout} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</a>
                                             </li>
